@@ -92,7 +92,11 @@ function getSpotWxLink(lon, lat) {
 
 $(function() {
   console.log("Ready.");
-  var map = polarMap("map-view");
+  var map = polarMap("map-view", {
+    permalink: false
+  });
+
+  map.map.panTo([66, -107]);
 
   var stationGroup = L.layerGroup();
   map.addLayer(stationGroup);
