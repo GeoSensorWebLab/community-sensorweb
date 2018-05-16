@@ -76,6 +76,19 @@ function getLiveStats(station) {
   $("#live-view .panel-humidity h2").html(humidity["value"] + humidity["uom"]);
 }
 
+function getMetadata(station) {
+  $("#meta-view .waiting").css({ display: "none" });
+  $("#meta-view .metadata").css({ display: "block" });
+
+  $("#meta-view .metadata h2").html(station["name"]);
+  $("#meta-view .metadata p").html(station["description"]);
+  $("#meta-view .metadata h3 a").attr("href", getSpotWxLink(station["location"]["coordinates"][0], station["location"]["coordinates"][1]));
+}
+
+function getSpotWxLink(lon, lat) {
+  return "https://spotwx.com/products/grib_index.php?model=gem_glb_25km&lat="+ lat + "&lon=" + lon;
+}
+
 
 $(function() {
   console.log("Ready.");
@@ -104,6 +117,7 @@ $(function() {
 
           marker.on('click', function () {
             getLiveStats(element);
+            getMetadata(element);
           });
 
           element.marker = marker;
