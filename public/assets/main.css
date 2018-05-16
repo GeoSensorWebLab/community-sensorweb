@@ -40,12 +40,16 @@ main {
   bottom: 0;
   left: 0;
 
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: 66% auto;
-
   background-color: #333;
   color: #FFF;
+}
+
+#container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: 2fr 1fr;
+
+  height: 100%;
 }
 
 #map-view {
@@ -84,6 +88,27 @@ main {
   grid-row-start: 1;
   grid-row-end: 3;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  padding: 0 1em;
+
   background-color: #335;
   color: #FFF;
+
+  font-family: sans-serif;
+}
+
+.panel h2 {
+  font-size: 2em;
+}
+
+#live-view > .panel {
+  border-bottom: 1px solid #000;
+  flex-grow: 2;
+}
+
+#live-view > .update-time {
+  border-bottom: 1px solid #000;
 }
