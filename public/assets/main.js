@@ -145,7 +145,6 @@ function getSpotWxLink(lon, lat) {
   return "https://spotwx.com/products/grib_index.php?model=gem_glb_25km&lat="+ lat + "&lon=" + lon;
 }
 
-
 $(function() {
   console.log("Ready.");
   var map = polarMap("map-view", {
@@ -158,29 +157,46 @@ $(function() {
   map.addLayer(stationGroup);
 
   function loadStations() {
-    Data["stations"].forEach(function(element) {
-      var temp = getResult(element, "temperature");
+    Data["stations"].forEach(function(station) {
+      var temp = getResult(station, "temperature");
+      var winddir = getResult(station, "wind_direction");
+
       if (temp !== undefined) {
         var color = getColor(last(temp["values"]));
       } else {
         var color = getColor(undefined);
       }
 
-      L.geoJson(element["location"], {
+      L.geoJson(station["location"], {
         pointToLayer: function(featureData, latlng) {
-          var marker = L.circleMarker(latlng, {
-            fillColor: color,
-            fillOpacity: 1,
-            opacity: 1
-          });
+          if (winddir === undefined) {
+            var marker = L.circleMarker(latlng, {
+              fillColor: color,
+              fillOpacity: 1,
+              opacity: 1,
+              weight: 1
+            });
+          } else {
+            var marker = new L.Marker.SVGMarker.RotatingMarker(latlng, {
+              iconOptions: {
+                circleRatio: 0,
+                circleText: station["id"],
+                fillColor: color,
+                fillOpacity: 1,
+                iconAnchor: [16, 16],
+                rotation: last(winddir["values"]),
+                weight: 1
+              }
+            });
+          }
 
           marker.on('click', function () {
-            getLiveStats(element);
-            getMetadata(element);
-            getChart(element, "temperature");
+            getLiveStats(station);
+            getMetadata(station);
+            getChart(station, "temperature");
           });
 
-          element.marker = marker;
+          station.marker = marker;
           return marker;
         }
       }).addTo(stationGroup);

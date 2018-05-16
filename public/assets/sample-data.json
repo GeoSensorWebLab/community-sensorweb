@@ -1,6 +1,7 @@
 {
   "stations": [
       {
+        "id": "WUM",
          "name": "Environment Canada Station WUM",
          "description": "Environment Canada Weather Station FARO RCS",
          "location": {
@@ -44,6 +45,7 @@
         ]
       },
       {
+        "id": "MFX",
          "name": "Environment Canada Station MFX",
          "description": "Environment Canada Weather Station SALLUIT QC",
          "location": {
@@ -87,6 +89,7 @@
         ]
       },
       {
+        "id": "XZC",
          "name": "Environment Canada Station XZC",
          "description": "Environment Canada Weather Station Moosonee RCS",
          "location": {
@@ -130,6 +133,7 @@
         ]
       },
       {
+        "id": "XRB",
          "name": "Environment Canada Station XRB",
          "description": "Environment Canada Weather Station RESOLUTE CS",
          "location": {
@@ -173,6 +177,7 @@
         ]
       },
       {
+        "id": "XFB",
          "name": "Environment Canada Station XFB",
          "description": "Environment Canada Weather Station IQALUIT CLIMATE NU",
          "location": {
@@ -216,6 +221,7 @@
         ]
       },
       {
+        "id": "XCM",
          "name": "Environment Canada Station XCM",
          "description": "Environment Canada Weather Station CAMBRIDGE BAY",
          "location": {
@@ -259,6 +265,7 @@
         ]
       },
       {
+        "id": "YZF",
          "name": "Environment Canada Station YZF",
          "description": "Environment Canada Weather Station Yellowknife",
          "location": {
@@ -302,6 +309,7 @@
         ]
       },
       {
+        "id": "YEV",
          "name": "Environment Canada Station YEV",
          "description": "Environment Canada Weather Station Inuvik",
          "location": {
@@ -345,6 +353,7 @@
         ]
       },
       {
+        "id": "WAY",
          "name": "Environment Canada Station WAY",
          "description": "Environment Canada Weather Station MOULD BAY CS",
          "location": {
@@ -388,6 +397,7 @@
         ]
       },
       {
+        "id": "WCA",
          "name": "Environment Canada Station WCA",
          "description": "Environment Canada Weather Station Cartwright",
          "location": {
@@ -431,6 +441,7 @@
         ]
       },
       {
+        "id": "YYQ",
          "name": "Environment Canada Station YYQ",
          "description": "Environment Canada Weather Station Churchill",
          "location": {
