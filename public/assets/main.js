@@ -1,5 +1,15 @@
 var Data = {};
 
+function getResult(station, property) {
+  if (station["results"] === undefined) {
+    return { "value": null };
+  } else {
+    return station["results"].find(function(e) {
+      return e["name"] === property;
+    });
+  }
+}
+
 var colourRamp = {
   "-50": "#313695",
   "-35": "#4575b4",
@@ -44,6 +54,28 @@ function getColor(temperature) {
   }
 }
 
+function getLiveStats(station) {
+  $("#live-view .waiting").css({ display: "none" });
+  $(".update-time, .panel, .extra").css({ display: "block" });
+
+
+  var date = new Date();
+  $("#live-view .update-time h3").html("Last Update<br>" + date.toString());
+
+  var temp = getResult(station, "temperature");
+  $("#live-view .panel-temp h2").html(temp["value"] + " " + temp["uom"]);
+
+  var windspeed = getResult(station, "wind_speed");
+  var winddir = getResult(station, "wind_direction");
+  $("#live-view .panel-wind h2").html(windspeed["value"] + " " + windspeed["uom"] + " " + winddir["value"] + winddir["uom"]);
+
+  var pressure = getResult(station, "air_pressure");
+  $("#live-view .panel-pressure h2").html(pressure["value"] + " " + pressure["uom"]);
+
+  var humidity = getResult(station, "relative_humidity");
+  $("#live-view .panel-humidity h2").html(humidity["value"] + humidity["uom"]);
+}
+
 
 $(function() {
   console.log("Ready.");
@@ -69,6 +101,11 @@ $(function() {
             fillOpacity: 1,
             opacity: 1
           });
+
+          marker.on('click', function () {
+            getLiveStats(element);
+          });
+
           element.marker = marker;
           return marker;
         }

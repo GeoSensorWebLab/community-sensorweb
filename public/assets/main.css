@@ -112,3 +112,7 @@ main {
 #live-view > .update-time {
   border-bottom: 1px solid #000;
 }
+
+.update-time, .panel, .extra {
+  display: none;
+}
