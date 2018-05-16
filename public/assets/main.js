@@ -2,12 +2,16 @@ var Data = {};
 
 function getResult(station, property) {
   if (station["results"] === undefined) {
-    return { "value": null };
+    return { "values": [] };
   } else {
     return station["results"].find(function(e) {
       return e["name"] === property;
     });
   }
+}
+
+function last(arr) {
+  return arr[arr.length - 1];
 }
 
 var colourRamp = {
@@ -35,7 +39,7 @@ function interpolate(target, lower, upper) {
 }
 
 function getColor(temperature) {
-  if (temperature === null) {
+  if (temperature === undefined) {
     return '#AAA';
   } else if (colourRamp[temperature.toString()] !== undefined) {
     return colourRamp[temperature];
@@ -63,17 +67,17 @@ function getLiveStats(station) {
   $("#live-view .update-time h3").html("Last Update<br>" + date.toString());
 
   var temp = getResult(station, "temperature");
-  $("#live-view .panel-temp h2").html(temp["value"] + " " + temp["uom"]);
+  $("#live-view .panel-temp h2").html(last(temp["values"]) + " " + temp["uom"]);
 
   var windspeed = getResult(station, "wind_speed");
   var winddir = getResult(station, "wind_direction");
-  $("#live-view .panel-wind h2").html(windspeed["value"] + " " + windspeed["uom"] + " " + winddir["value"] + winddir["uom"]);
+  $("#live-view .panel-wind h2").html(last(windspeed["values"]) + " " + windspeed["uom"] + " " + last(winddir["values"]) + winddir["uom"]);
 
   var pressure = getResult(station, "air_pressure");
-  $("#live-view .panel-pressure h2").html(pressure["value"] + " " + pressure["uom"]);
+  $("#live-view .panel-pressure h2").html(last(pressure["values"]) + " " + pressure["uom"]);
 
   var humidity = getResult(station, "relative_humidity");
-  $("#live-view .panel-humidity h2").html(humidity["value"] + humidity["uom"]);
+  $("#live-view .panel-humidity h2").html(last(humidity["values"]) + humidity["uom"]);
 }
 
 function getMetadata(station) {
@@ -103,18 +107,12 @@ $(function() {
 
   function loadStations() {
     Data["stations"].forEach(function(element) {
-      if (element["results"] === undefined) {
-        var temp = { "value": null };
-      } else {
-        var temp = element["results"].find(function(e) {
-          return e["name"] === "temperature";
-        });
-      }
+      var temp = getResult(element, "temperature");
 
       L.geoJson(element["location"], {
         pointToLayer: function(featureData, latlng) {
           var marker = L.circleMarker(latlng, {
-            fillColor: getColor(temp["value"]),
+            fillColor: getColor(last(temp["values"])),
             fillOpacity: 1,
             opacity: 1
           });

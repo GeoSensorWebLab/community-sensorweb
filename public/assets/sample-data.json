@@ -13,32 +13,32 @@
          "results": [
           {
             "name": "temperature",
-            "value": 16.4,
+            "values": [16.4],
             "uom": "&deg; C"
           },
           {
             "name": "wind_direction",
-            "value": 225,
+            "values": [225],
             "uom": "&deg;"
           },
           {
             "name": "wind_speed",
-            "value": 3,
+            "values": [3],
             "uom": "km/h"
           },
           {
             "name": "air_pressure",
-            "value": 101.33,
+            "values": [101.33],
             "uom": "kPa"
           },
           {
             "name": "visibility",
-            "value": 32,
+            "values": [32],
             "uom": "km"
           },
           {
             "name": "relative_humidity",
-            "value": 29,
+            "values": [29],
             "uom": "%"
           }
         ]
