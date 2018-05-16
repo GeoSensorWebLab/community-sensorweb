@@ -52,7 +52,39 @@
                62.183333
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [-10, -10, -10, -10, -10, -9, -9, -9, -9, -9, -9, -10, -10, -11, -11, -11, -11, -12, -12, -12, -12],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       },
       {
          "name": "Environment Canada Station XZC",
@@ -63,7 +95,39 @@
                51.266667
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [-3, -3, -3, -2, -1, -1, -1, 0, -1, -1, -3, -3, -4, -4, -4, -4, -5, -6, -5, -5, -5],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       },
       {
          "name": "Environment Canada Station XRB",
@@ -74,7 +138,39 @@
                74.716667
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [-14, -13, -12, -11, -11, -11, -10, -10, -11, -11, -11, -10, -10, -10, -10, -10, -12, -10, -12, -11, -12, -11],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       },
       {
          "name": "Environment Canada Station XFB",
@@ -85,7 +181,39 @@
                63.75
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [-4, -3, -3, -3, -3, -3, -3, -2, -3, -3, -4, -5, -5, -6, -7, -7, -8, -8, -9, -9, -9],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       },
       {
          "name": "Environment Canada Station XCM",
@@ -96,7 +224,39 @@
                69.116667
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [-10, -9, -9, -8, -8, -7, -7, -7, -7, -7, -8, -8, -8, -8, -9, -9, -9, -10, -11, -11, -10, -9, -9],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       },
       {
          "name": "Environment Canada Station YZF",
@@ -107,7 +267,39 @@
                62.46278
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [0, 1, 3, 3, 4, 4, 4, 4, 4, 3, 2, 1, 0, -1, -2, -3, -3, -3, -2, -2, -2, -2, -3],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       },
       {
          "name": "Environment Canada Station YEV",
@@ -118,7 +310,39 @@
                68.30378
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [1, 1, 3, 2, 3, 3, 1, 1, 0, -3, -4, -5, -6, -6, -7, -7, -6, -5, -4, -5, -5, -4, -2],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       },
       {
          "name": "Environment Canada Station WAY",
@@ -129,7 +353,39 @@
                76.233333
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [-9, -9, -9, -9, -9, null, -9, -9, -9, -9, -9, -9, -9, -10, -10, -10, -10, -10, -11, -11, -11, -10, -10],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       },
       {
          "name": "Environment Canada Station WCA",
@@ -140,7 +396,39 @@
                53.68278
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [1, 2, 3, 3, 2, 3, 3, 6, 10, 7, 8, 9, 8, 6, 5, 3, 2, 0, 0, 0],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       },
       {
          "name": "Environment Canada Station YYQ",
@@ -151,7 +439,39 @@
                58.73906
             ],
             "type": "Point"
-         }
+         },
+         "results": [
+          {
+            "name": "temperature",
+            "values": [-9, -10, -9, -9, -9, -8, -8, -8, -8, -9, -9, -9, -10, -11, -11, -11, -12, -13, -12, -11, -11, -11],
+            "uom": "°C"
+          },
+          {
+            "name": "wind_direction",
+            "values": [225],
+            "uom": "˚"
+          },
+          {
+            "name": "wind_speed",
+            "values": [3],
+            "uom": "km/h"
+          },
+          {
+            "name": "air_pressure",
+            "values": [101.33],
+            "uom": "kPa"
+          },
+          {
+            "name": "visibility",
+            "values": [32],
+            "uom": "km"
+          },
+          {
+            "name": "relative_humidity",
+            "values": [29],
+            "uom": "%"
+          }
+        ]
       }
    ]
 }
