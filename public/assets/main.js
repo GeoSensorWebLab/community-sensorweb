@@ -58,6 +58,37 @@ function getColor(temperature) {
   }
 }
 
+
+// Load chart data for station into the chart view
+function getChart(station, property) {
+  $("#chart-view .waiting").css({ display: "none" });
+  $("#chart-view #chart").css({ display: "block" });
+
+  var result = getResult(station, property);
+
+  Highcharts.stockChart('chart', {
+    rangeSelector: {
+      enabled: false
+    },
+
+    title: {
+      text: station["name"] + " " + property
+    },
+
+    series: [{
+      name: property,
+      data: result["values"],
+      pointStart: Date.UTC(2018, 4, 14, 22),
+      pointInterval: 3600 * 1000,
+      tooltip: {
+        valueDecimals: 1,
+        valueSuffix: result["uom"]
+      }
+    }]
+  });
+
+}
+
 function getLiveStats(station) {
   $("#live-view .waiting").css({ display: "none" });
   $(".update-time, .panel, .extra").css({ display: "block" });
@@ -120,6 +151,7 @@ $(function() {
           marker.on('click', function () {
             getLiveStats(element);
             getMetadata(element);
+            getChart(element, "temperature");
           });
 
           element.marker = marker;

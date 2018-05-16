@@ -85,6 +85,13 @@ main {
   color: #FFF;
 }
 
+#chart {
+  display: none;
+
+  width: 100%;
+  height: 100%;
+}
+
 #meta-view {
   grid-column-start: 7;
   grid-column-end: 10;

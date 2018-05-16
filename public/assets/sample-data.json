@@ -13,13 +13,13 @@
          "results": [
           {
             "name": "temperature",
-            "values": [16.4],
-            "uom": "&deg; C"
+            "values": [6, 9, 10, 10, 8, 7, 11, 8, 11, 10, 9, 8, 7, 6, 5, 4, 4, 5, 5, 5, 4, 4, 5, 5],
+            "uom": "°C"
           },
           {
             "name": "wind_direction",
             "values": [225],
-            "uom": "&deg;"
+            "uom": "˚"
           },
           {
             "name": "wind_speed",
