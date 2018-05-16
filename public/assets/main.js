@@ -1,8 +1,9 @@
+var chart;
 var Data = {};
 
 function getResult(station, property) {
   if (station["results"] === undefined) {
-    return { "values": [] };
+    return undefined;
   } else {
     return station["results"].find(function(e) {
       return e["name"] === property;
@@ -11,7 +12,11 @@ function getResult(station, property) {
 }
 
 function last(arr) {
-  return arr[arr.length - 1];
+  if (arr === undefined) {
+    return undefined;
+  } else {
+    return arr[arr.length - 1];
+  }
 }
 
 var colourRamp = {
@@ -66,27 +71,35 @@ function getChart(station, property) {
 
   var result = getResult(station, property);
 
-  Highcharts.stockChart('chart', {
-    rangeSelector: {
-      enabled: false
-    },
+  if (chart !== undefined && chart.destroy !== undefined) {
+    chart.destroy();
+    chart = undefined;
+  }
 
-    title: {
-      text: station["name"] + " " + property
-    },
+  if (result === undefined) {
+    $("#chart").html("<h2>No data available.</h2>");
+  } else {
+    chart = Highcharts.stockChart('chart', {
+      rangeSelector: {
+        enabled: false
+      },
 
-    series: [{
-      name: property,
-      data: result["values"],
-      pointStart: Date.UTC(2018, 4, 14, 22),
-      pointInterval: 3600 * 1000,
-      tooltip: {
-        valueDecimals: 1,
-        valueSuffix: result["uom"]
-      }
-    }]
-  });
+      title: {
+        text: station["name"] + " " + property
+      },
 
+      series: [{
+        name: property,
+        data: result["values"],
+        pointStart: Date.UTC(2018, 4, 14, 22),
+        pointInterval: 3600 * 1000,
+        tooltip: {
+          valueDecimals: 1,
+          valueSuffix: result["uom"]
+        }
+      }]
+    });
+  }
 }
 
 function getLiveStats(station) {
@@ -98,17 +111,25 @@ function getLiveStats(station) {
   $("#live-view .update-time h3").html("Last Update<br>" + date.toString());
 
   var temp = getResult(station, "temperature");
-  $("#live-view .panel-temp h2").html(last(temp["values"]) + " " + temp["uom"]);
+  if (temp !== undefined) {
+    $("#live-view .panel-temp h2").html(last(temp["values"]) + " " + temp["uom"]);
+  }
 
   var windspeed = getResult(station, "wind_speed");
   var winddir = getResult(station, "wind_direction");
-  $("#live-view .panel-wind h2").html(last(windspeed["values"]) + " " + windspeed["uom"] + " " + last(winddir["values"]) + winddir["uom"]);
+  if (windspeed !== undefined && winddir !== undefined) {
+    $("#live-view .panel-wind h2").html(last(windspeed["values"]) + " " + windspeed["uom"] + " " + last(winddir["values"]) + winddir["uom"]);
+  }
 
   var pressure = getResult(station, "air_pressure");
-  $("#live-view .panel-pressure h2").html(last(pressure["values"]) + " " + pressure["uom"]);
+  if (pressure !== undefined) {
+    $("#live-view .panel-pressure h2").html(last(pressure["values"]) + " " + pressure["uom"]);
+  }
 
   var humidity = getResult(station, "relative_humidity");
-  $("#live-view .panel-humidity h2").html(last(humidity["values"]) + humidity["uom"]);
+  if (humidity !== undefined) {
+    $("#live-view .panel-humidity h2").html(last(humidity["values"]) + humidity["uom"]);
+  }
 }
 
 function getMetadata(station) {
@@ -139,11 +160,16 @@ $(function() {
   function loadStations() {
     Data["stations"].forEach(function(element) {
       var temp = getResult(element, "temperature");
+      if (temp !== undefined) {
+        var color = getColor(last(temp["values"]));
+      } else {
+        var color = getColor(undefined);
+      }
 
       L.geoJson(element["location"], {
         pointToLayer: function(featureData, latlng) {
           var marker = L.circleMarker(latlng, {
-            fillColor: getColor(last(temp["values"])),
+            fillColor: color,
             fillOpacity: 1,
             opacity: 1
           });

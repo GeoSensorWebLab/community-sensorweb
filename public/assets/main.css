@@ -92,6 +92,10 @@ main {
   height: 100%;
 }
 
+#chart h2 {
+  text-align: center;
+}
+
 #meta-view {
   grid-column-start: 7;
   grid-column-end: 10;
