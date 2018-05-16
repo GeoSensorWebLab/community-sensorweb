@@ -21,7 +21,21 @@ TODO: Write instructions for setting up this web front-end on a new server.
 
 ## Development Instructions
 
-TODO: Write instructions for setting up a development environment for modifying this site, and how to submit those changes for inclusion in the main repository.
+When developing the site locally, it is necessary to access the site over HTTP and not via the files directly. This is because the tiles for Arctic Web Map are loaded relatively, and will not load from your file system. An optional Node web server is included to test changes locally.
+
+To start the Node web server, you will need Node.js. Once installed, the server files can be installed with:
+
+```sh
+$ npm install
+```
+
+And the web server started with:
+
+```sh
+$ node index.js
+```
+
+Use `Control-C` to quit the web server. The server will then be accessible at http://localhost:3000/.
 
 ## Authors
 

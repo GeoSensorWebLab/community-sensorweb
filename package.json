@@ -1,0 +1,14 @@
+{
+  "name": "community-sensorweb",
+  "version": "0.1.0",
+  "description": "UI for Arctic Sensor Web",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Badger <james@jamesbadger.ca>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
