@@ -1,0 +1,125 @@
+{
+  "stations": [
+      {
+         "name": "Environment Canada Station WUM",
+         "description": "Environment Canada Weather Station FARO RCS",
+         "location": {
+            "coordinates": [
+               -133.383333,
+               62.2
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station MFX",
+         "description": "Environment Canada Weather Station SALLUIT QC",
+         "location": {
+            "coordinates": [
+               -75.666667,
+               62.183333
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station XZC",
+         "description": "Environment Canada Weather Station Moosonee RCS",
+         "location": {
+            "coordinates": [
+               -80.65,
+               51.266667
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station XRB",
+         "description": "Environment Canada Weather Station RESOLUTE CS",
+         "location": {
+            "coordinates": [
+               -94.983333,
+               74.716667
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station XFB",
+         "description": "Environment Canada Weather Station IQALUIT CLIMATE NU",
+         "location": {
+            "coordinates": [
+               -68.55,
+               63.75
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station XCM",
+         "description": "Environment Canada Weather Station CAMBRIDGE BAY",
+         "location": {
+            "coordinates": [
+               -105.133333,
+               69.116667
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station YZF",
+         "description": "Environment Canada Weather Station Yellowknife",
+         "location": {
+            "coordinates": [
+               -114.44028,
+               62.46278
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station YEV",
+         "description": "Environment Canada Weather Station Inuvik",
+         "location": {
+            "coordinates": [
+               -133.48312,
+               68.30378
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station WAY",
+         "description": "Environment Canada Weather Station MOULD BAY CS",
+         "location": {
+            "coordinates": [
+               -119.333333,
+               76.233333
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station WCA",
+         "description": "Environment Canada Weather Station Cartwright",
+         "location": {
+            "coordinates": [
+               -57.04194,
+               53.68278
+            ],
+            "type": "Point"
+         }
+      },
+      {
+         "name": "Environment Canada Station YYQ",
+         "description": "Environment Canada Weather Station Churchill",
+         "location": {
+            "coordinates": [
+               -94.06636,
+               58.73906
+            ],
+            "type": "Point"
+         }
+      }
+   ]
+}
