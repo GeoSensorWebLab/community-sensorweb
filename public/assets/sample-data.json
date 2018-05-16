@@ -19,7 +19,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [315],
             "uom": "˚"
           },
           {
@@ -63,7 +63,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [],
             "uom": "˚"
           },
           {
@@ -107,7 +107,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [0],
             "uom": "˚"
           },
           {
@@ -151,7 +151,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [null],
             "uom": "˚"
           },
           {
@@ -195,7 +195,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [112.5],
             "uom": "˚"
           },
           {
@@ -239,7 +239,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [0],
             "uom": "˚"
           },
           {
@@ -283,7 +283,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [90],
             "uom": "˚"
           },
           {
@@ -327,7 +327,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [315],
             "uom": "˚"
           },
           {
@@ -371,7 +371,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [315],
             "uom": "˚"
           },
           {
@@ -415,7 +415,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [112.5],
             "uom": "˚"
           },
           {
@@ -459,7 +459,7 @@
           },
           {
             "name": "wind_direction",
-            "values": [225],
+            "values": [337.5],
             "uom": "˚"
           },
           {

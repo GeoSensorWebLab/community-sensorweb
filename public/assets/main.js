@@ -169,7 +169,7 @@ $(function() {
 
       L.geoJson(station["location"], {
         pointToLayer: function(featureData, latlng) {
-          if (winddir === undefined) {
+          if (winddir === undefined || last(winddir["values"]) == undefined) {
             var marker = L.circleMarker(latlng, {
               fillColor: color,
               fillOpacity: 1,
