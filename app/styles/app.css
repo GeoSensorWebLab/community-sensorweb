@@ -154,10 +154,6 @@ main {
   border-bottom: 1px solid #000;
 }
 
-#live-view .update-time, #live-view .panel, #live-view .extra {
-  display: none;
-}
-
 /* Compass directions */
 .dir0 {
   transform: rotate(180deg);

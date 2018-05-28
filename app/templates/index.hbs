@@ -41,16 +41,20 @@
   </div>
 
   <div id="live-view">
+    {{#unless activeStation}}
     <div class="waiting">
       <h2>Select a station for weather information</h2>
     </div>
 
+    {{else}}
+
     <div class="update-time">
-      <h3>Last Update:<br>15 May 2018 15:14:00 MDT</h3>
+      <!-- TODO: This should point to the most recently updated datastream that we are extracting for this list -->
+      <h3>Last Update:<br>{{activeStation.Datastreams.0.LastObservation.resultTime}}</h3>
     </div>
 
     <div class="panel panel-temp">
-      <h2>18.3 &deg;C</h2>
+      <h2>{{activeStation.Datastreams.0.LastObservation.result}} {{activeStation.Datastreams.0.unitOfMeasurement.name}}</h2>
     </div>
 
     <div class="panel panel-wind">
@@ -72,5 +76,6 @@
     <div class="extra">
       <h3>More Graphs</h3>
     </div>
+    {{/unless}}
   </div>
 </div>
