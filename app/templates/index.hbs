@@ -4,7 +4,7 @@
 
     {{#each Things as |thing|}}
 
-      {{#layers.geoJSON geoJSON=thing.Location.location onClick=(action "selectLocation") as |marker|}}
+      {{#layers.geoJSON geoJSON=thing.Location.location onClick=(action "selectStation" thing) as |marker|}}
         {{#marker.popup}}
           {{thing.name}}
         {{/marker.popup}}
@@ -15,11 +15,15 @@
   {{/leaflet-map}}
 
   <div id="chart-view">
+    {{#unless activeStation}}
     <div class="waiting">
       <h2>Select a station for weather chart</h2>
     </div>
+    {{else}}
     <div id="chart">
+      <h2>Preparing chart&hellip;</h2>
     </div>
+    {{/unless}}
   </div>
 
   <div id="meta-view">

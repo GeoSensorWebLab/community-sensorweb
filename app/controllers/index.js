@@ -8,6 +8,8 @@ export default Controller.extend({
   lng: -100,
   zoom: 3,
 
+  activeStation: null,
+
   Things: A([
     {
       "@iot.id": 11,
@@ -62,8 +64,9 @@ export default Controller.extend({
   ]),
 
   actions: {
-    selectLocation() {
-      Logger.log("HOWDY");
+    selectStation(stn) {
+      this.set('activeStation', stn);
+      Logger.log(this.activeStation);
     }
   }
 });
