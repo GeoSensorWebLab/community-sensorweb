@@ -76,6 +76,10 @@ main {
   color: #FFF;
 }
 
+#map-view.leaflet-container {
+  color: #000;
+}
+
 .svg-icon-svg {
   overflow: visible;
 }

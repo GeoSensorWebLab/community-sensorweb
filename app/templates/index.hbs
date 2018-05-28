@@ -4,7 +4,10 @@
 
     {{#each Things as |thing|}}
 
-      {{#layers.geoJSON geoJSON=thing.Location.location}}
+      {{#layers.geoJSON geoJSON=thing.Location.location onClick=(action "selectLocation") as |marker|}}
+        {{#marker.popup}}
+          {{thing.name}}
+        {{/marker.popup}}
       {{/layers.geoJSON}}
 
     {{/each}}

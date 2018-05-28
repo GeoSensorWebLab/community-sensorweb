@@ -1,5 +1,7 @@
 import Controller from '@ember/controller';
 import { A } from '@ember/array';
+import Ember from 'ember';
+const { Logger } = Ember;
 
 export default Controller.extend({
   lat: 65,
@@ -57,5 +59,11 @@ export default Controller.extend({
         "observationType": "http://www.opengis.net/def/observationType/OGC-OM/2.0/OM_Observation"
       }]
     }
-  ])
+  ]),
+
+  actions: {
+    selectLocation() {
+      Logger.log("HOWDY");
+    }
+  }
 });
