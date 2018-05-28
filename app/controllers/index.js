@@ -65,7 +65,11 @@ export default Controller.extend({
 
   actions: {
     selectStation(stn) {
+      let lat = stn.Location.location.coordinates[1];
+      let lng = stn.Location.location.coordinates[0];
+
       this.set('activeStation', stn);
+      this.set('forecastLinkForStation', "https://spotwx.com/products/grib_index.php?model=gem_reg_10km&lat="+ lat + "&lon=" + lng);
       Logger.log(this.activeStation);
     }
   }

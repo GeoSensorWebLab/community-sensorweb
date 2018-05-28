@@ -27,14 +27,17 @@
   </div>
 
   <div id="meta-view">
+    {{#unless activeStation}}
     <div class="waiting">
       <h2>Select a station for metadata</h2>
     </div>
+    {{else}}
     <div class="metadata">
-      <h2></h2>
-      <p></p>
-      <h3><a href="">2 Day Forecast</a></h3>
+      <h2>{{activeStation.name}}</h2>
+      <p>{{activeStation.description}}</p>
+      <h3><a href="{{forecastLinkForStation}}">2 Day Forecast</a></h3>
     </div>
+    {{/unless}}
   </div>
 
   <div id="live-view">
