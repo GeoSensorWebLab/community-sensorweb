@@ -142,7 +142,7 @@ function getMetadata(station) {
 }
 
 function getSpotWxLink(lon, lat) {
-  return "https://spotwx.com/products/grib_index.php?model=gem_glb_25km&lat="+ lat + "&lon=" + lon;
+  return "https://spotwx.com/products/grib_index.php?model=gem_reg_10km&lat="+ lat + "&lon=" + lon;
 }
 
 $(function() {
