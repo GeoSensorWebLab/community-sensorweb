@@ -1,6 +1,7 @@
 <div id="container">
-  <div id="map-view">
-  </div>
+  {{#leaflet-map id="map-view" lat=lat lng=lng zoom=zoom}}
+    {{tile-layer url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
+  {{/leaflet-map}}
 
   <div id="chart-view">
     <div class="waiting">
