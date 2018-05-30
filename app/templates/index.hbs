@@ -2,7 +2,7 @@
   {{#leaflet-map id="map-view" lat=lat lng=lng zoom=zoom as |layers|}}
     {{layers.tile url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 
-    {{#each Things as |thing|}}
+    {{#each model.Things as |thing|}}
 
       {{#layers.geoJSON geoJSON=thing.Location.location onClick=(action "selectStation" thing) as |marker|}}
         {{#marker.popup}}
