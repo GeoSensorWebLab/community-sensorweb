@@ -20,7 +20,7 @@
       <h2>Select a station for weather chart</h2>
     </div>
     {{else}}
-    {{highchart-diagram id="chart"}}
+    {{highchart-diagram id="chart" datastream=activeDatastream}}
     {{/unless}}
   </div>
 
@@ -51,9 +51,7 @@
       <h3>Last Update:<br>{{activeStation.Datastreams.0.LastObservation.resultTime}}</h3>
     </div>
 
-    <div class="panel panel-temp">
-      <h2>{{activeStation.Datastreams.0.LastObservation.result}} {{activeStation.Datastreams.0.unitOfMeasurement.name}}</h2>
-    </div>
+    {{live-panel name="temperature" datastream=activeStation.Datastreams.[0] activeDatastream=activeDatastream}}
 
     <div class="panel panel-wind">
       <h2>8 Kts NNW</h2>

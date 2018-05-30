@@ -8,6 +8,7 @@ export default Controller.extend({
   lng: -100,
   zoom: 3,
 
+  activeDatastream: null,
   activeStation: null,
 
   Things: A([
@@ -114,6 +115,8 @@ export default Controller.extend({
       let lng = stn.Location.location.coordinates[0];
 
       this.set('activeStation', stn);
+      this.set('activeDatastream', stn.Datastreams[0]);
+      this.set('temperatureDatastream', stn.Datastreams[0]);
       this.set('forecastLinkForStation', "https://spotwx.com/products/grib_index.php?model=gem_reg_10km&lat="+ lat + "&lon=" + lng);
       Logger.log(this.activeStation);
     }

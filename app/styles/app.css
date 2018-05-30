@@ -135,14 +135,13 @@ main {
   flex-direction: column;
   justify-content: space-between;
 
-  padding: 0 1em;
-
   background-color: #335;
   color: #FFF;
 }
 
 .panel h2 {
   font-size: 2em;
+  padding: 0 1em;
 }
 
 #live-view > .panel {
@@ -150,8 +149,14 @@ main {
   flex-grow: 2;
 }
 
+#live-view > .is-active-panel {
+  background-color: rgba(255,255,255,0.1);
+}
+
 #live-view > .update-time {
   border-bottom: 1px solid #000;
+
+  padding: 0 2em;
 }
 
 /* Compass directions */
