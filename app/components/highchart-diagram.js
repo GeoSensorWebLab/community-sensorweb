@@ -1,10 +1,10 @@
 import Component from '@ember/component';
-import Highcharts from 'highcharts/highstock';
+import Highcharts from 'highcharts';
 
 export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
-    let chart = Highcharts.stockChart('chart', {
+    let chart = Highcharts.chart('chart', {
       rangeSelector: {
         enabled: false
       },
