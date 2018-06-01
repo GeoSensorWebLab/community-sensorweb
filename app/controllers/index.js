@@ -11,12 +11,12 @@ export default Controller.extend({
 
   actions: {
     selectStation(stn) {
-      let lat = stn.Location.location.coordinates[1];
-      let lng = stn.Location.location.coordinates[0];
+      let lat = stn.get('lastLocation.location.coordinates')[1];
+      let lng = stn.get('lastLocation.location.coordinates')[0];
 
       this.set('activeStation', stn);
-      this.set('activeDatastream', stn.Datastreams[0]);
-      this.set('temperatureDatastream', stn.Datastreams[0]);
+      this.set('activeDatastream', stn.get('datastreams.firstObject'));
+      this.set('temperatureDatastream', stn.get('datastreams.firstObject'));
       this.set('forecastLinkForStation', "https://spotwx.com/products/grib_index.php?model=gem_reg_10km&lat="+ lat + "&lon=" + lng);
     }
   }

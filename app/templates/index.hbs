@@ -2,9 +2,8 @@
   {{#leaflet-map id="map-view" lat=lat lng=lng zoom=zoom as |layers|}}
     {{layers.tile url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
 
-    {{#each model.Things as |thing|}}
-
-      {{#layers.geoJSON geoJSON=thing.Location.location onClick=(action "selectStation" thing) as |marker|}}
+    {{#each model as |thing|}}
+      {{#layers.geoJSON geoJSON=thing.lastLocation.location onClick=(action "selectStation" thing) as |marker|}}
         {{#marker.popup}}
           {{thing.name}}
         {{/marker.popup}}
@@ -48,10 +47,10 @@
 
     <div class="update-time">
       <!-- TODO: This should point to the most recently updated datastream that we are extracting for this list -->
-      <h3>Last Update:<br>{{activeStation.Datastreams.0.LastObservation.resultTime}}</h3>
+      <h3>Last Update:<br>{{activeStation.datastreams.firstObject.lastObservation.resultTime}}</h3>
     </div>
 
-    {{live-panel name="temperature" datastream=activeStation.Datastreams.[0] activeDatastream=activeDatastream}}
+    {{live-panel name="temperature" datastream=activeStation.datastreams.firstObject activeDatastream=activeDatastream}}
 
     <div class="panel panel-wind">
       <h2>8 Kts NNW</h2>
