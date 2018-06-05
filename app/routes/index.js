@@ -2,6 +2,34 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   model() {
+    // Use pushPayload to force this to be deserialized from SensorThings API
+    // to JSON API
+    this.get('store').pushPayload('thing', {
+      "@iot.id": 10,
+      "@iot.selfLink": "https://sensors.arcticconnect.org:6443/v1.0/Things(10)",
+      "name": "Environment Canada Station MFX",
+      "description": "Environment Canada Weather Station SALLUIT QC",
+      "properties": {
+         " STD Time Zone / Fuseau horaire heure normale": "EST",
+         "# ICAO": "CMFX",
+         "# MSC": "7117800",
+         "# WMO": "71641",
+         "#IATA": "MFX",
+         "AUTO/MAN": "Auto",
+         "DST Time Zone / Fuseau horaire été": "EDT",
+         "EN name": "SALLUIT QC",
+         "Elevation": "228",
+         "FR name": "Salluit QC",
+         "Latitude": "62.183333",
+         "Longitude": "-75.666667",
+         "Province": "QC"
+      },
+      "Locations@iot.navigationLink": "https://sensors.arcticconnect.org:6443/v1.0/Things(10)/Locations",
+      "Datastreams@iot.navigationLink": "https://sensors.arcticconnect.org:6443/v1.0/Things(10)/Datastreams",
+      "HistoricalLocations@iot.navigationLink": "https://sensors.arcticconnect.org:6443/v1.0/Things(10)/HistoricalLocations"
+    });
+
+
     this.get('store').push({
       "included": [{
         "id": 11,
