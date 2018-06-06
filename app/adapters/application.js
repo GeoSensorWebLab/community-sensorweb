@@ -4,6 +4,7 @@ import DS from 'ember-data';
 export default DS.RESTAdapter.extend({
   host: config.APP.staURL,
   namespace: config.APP.staPath,
+  defaultSerializer: 'entity',
 
   _buildURL: function(type, id) {
     var url = [];
