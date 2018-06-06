@@ -3,6 +3,51 @@ import DS from 'ember-data';
 export default DS.JSONSerializer.extend({
   primaryKey: '@iot.id',
 
+  // Override to only extract navigation links from SensorThings API
+  // Expanded records not supported yet.
+  extractRelationships(modelClass, resourceHash) {
+    let relationships = {};
+
+    modelClass.eachRelationship((key, relationshipMeta) => {
+      let relationship = null;
+
+      let linkKey = this.keyForLink(key, relationshipMeta.kind);
+      if (resourceHash[linkKey] !== undefined) {
+        let related = resourceHash[linkKey];
+        relationship = relationship || {};
+        relationship.links = { related };
+      }
+
+      if (relationship) {
+        relationships[key] = relationship;
+      }
+    });
+
+    return relationships;
+  },
+
+  keyForLink(key, kind) {
+    let properKey = '';
+    switch(key) {
+      case 'things':
+      properKey = 'Things';
+      break;
+      case 'locations':
+      properKey = 'Locations';
+      break;
+      case 'historicalLocations':
+      properKey = 'HistoricalLocations';
+      break;
+      case 'datastreams':
+      properKey = 'Datastreams';
+      break;
+      default:
+      console.warn('Unhandled keyForLink', key);
+    }
+
+    return `${properKey}@iot.navigationLink`;
+  },
+
   // Customize method to handle payload.value array
   normalizeResponse(store, primaryModelClass, payload, id, requestType, isSingle) {
     let documentHash = {
