@@ -1,15 +1,32 @@
 import DS from 'ember-data';
 
 export default DS.JSONAPISerializer.extend({
-  primaryKey: '@iot.id',
-
-  pushPayload(store, payload) {
-    store.push({
+  normalize(typeClass, hash) {
+    let newHash = {
       data: {
-        id: payload['@iot.id'],
+        id: hash['@iot.id'],
         type: 'thing',
-        attributes: payload
+        attributes: hash,
+        relationships: {
+          locations: {
+            links: {
+              related: hash['Locations@iot.navigationLink']
+            }
+          },
+          datastreams: {
+            links: {
+              related: hash['Datastreams@iot.navigationLink']
+            }
+          },
+          historicalLocations: {
+            links: {
+              related: hash['HistoricalLocations@iot.navigationLink']
+            }
+          }
+        }
       }
-    });
+    };
+
+    return newHash;
   }
 });

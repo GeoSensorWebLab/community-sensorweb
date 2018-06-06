@@ -2,9 +2,11 @@ import Route from '@ember/routing/route';
 
 export default Route.extend({
   model() {
+    let store = this.get('store');
+
     // Use pushPayload to force this to be deserialized from SensorThings API
     // to JSON API
-    this.get('store').pushPayload('thing', {
+    store.push(store.normalize('thing', {
       "@iot.id": 10,
       "@iot.selfLink": "https://sensors.arcticconnect.org:6443/v1.0/Things(10)",
       "name": "Environment Canada Station MFX",
@@ -27,10 +29,10 @@ export default Route.extend({
       "Locations@iot.navigationLink": "https://sensors.arcticconnect.org:6443/v1.0/Things(10)/Locations",
       "Datastreams@iot.navigationLink": "https://sensors.arcticconnect.org:6443/v1.0/Things(10)/Datastreams",
       "HistoricalLocations@iot.navigationLink": "https://sensors.arcticconnect.org:6443/v1.0/Things(10)/HistoricalLocations"
-    });
+    }));
 
 
-    this.get('store').push({
+    store.push({
       "included": [{
         "id": 11,
         "type": "location",
