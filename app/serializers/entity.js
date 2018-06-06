@@ -28,11 +28,12 @@ export default DS.JSONSerializer.extend({
 
   keyForLink(key, kind) {
     const keys = {
-      'datastreams': 'Datastreams',
-      'locations': 'Locations',
+      'datastream':   'Datastream',
+      'datastreams':  'Datastreams',
+      'locations':    'Locations',
       'observations': 'Observations',
-      'thing': 'Thing',
-      'things': 'Things',
+      'thing':        'Thing',
+      'things':       'Things'
     }
 
     let properKey = keys[key];
