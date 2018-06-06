@@ -53,8 +53,8 @@ export default DS.JSONSerializer.extend({
     let meta = this.extractMeta(store, primaryModelClass, payload);
     if (meta) {
       assert(
-        'The `meta` returned from `extractMeta` has to be an object, not "' + typeOf(meta) + '".',
-        typeOf(meta) === 'object'
+        'The `meta` returned from `extractMeta` has to be an object, not "' + typeof(meta) + '".',
+        typeof(meta) === 'object'
       );
       documentHash.meta = meta;
     }
