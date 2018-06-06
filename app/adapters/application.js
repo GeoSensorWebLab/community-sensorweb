@@ -7,7 +7,7 @@ export default DS.RESTAdapter.extend({
 
   _buildURL: function(type, id) {
     var url = [];
-    var host = Ember.get(this, 'host');
+    var host = this.get('host');
     var prefix = this.urlPrefix();
     var path;
 
@@ -45,7 +45,7 @@ export default DS.RESTAdapter.extend({
       case "thing":
       return "Things";
       default:
-      Ember.Logger.warn("Unknown path: " + type);
+      console.warn("Unknown path: " + type);
       return null;
     }
   }
