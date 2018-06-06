@@ -28,12 +28,13 @@ export default DS.JSONSerializer.extend({
 
   keyForLink(key, kind) {
     const keys = {
-      'datastream':   'Datastream',
-      'datastreams':  'Datastreams',
-      'locations':    'Locations',
-      'observations': 'Observations',
-      'thing':        'Thing',
-      'things':       'Things'
+      'datastream':       'Datastream',
+      'datastreams':      'Datastreams',
+      'locations':        'Locations',
+      'observations':     'Observations',
+      'observedProperty': 'ObservedProperty',
+      'thing':            'Thing',
+      'things':           'Things'
     }
 
     let properKey = keys[key];
@@ -59,7 +60,7 @@ export default DS.JSONSerializer.extend({
       documentHash.meta = meta;
     }
 
-    if (isSingle) {
+    if (isSingle || requestType === "findBelongsTo") {
       let { data } = this.normalize(primaryModelClass, payload);
       documentHash.data = data;
     } else {
