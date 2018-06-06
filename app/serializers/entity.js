@@ -27,21 +27,16 @@ export default DS.JSONSerializer.extend({
   },
 
   keyForLink(key, kind) {
-    let properKey = '';
-    switch(key) {
-      case 'things':
-      properKey = 'Things';
-      break;
-      case 'locations':
-      properKey = 'Locations';
-      break;
-      case 'historicalLocations':
-      properKey = 'HistoricalLocations';
-      break;
-      case 'datastreams':
-      properKey = 'Datastreams';
-      break;
-      default:
+    const keys = {
+      'datastreams': 'Datastreams',
+      'locations': 'Locations',
+      'observations': 'Observations',
+      'thing': 'Thing',
+      'things': 'Things',
+    }
+
+    let properKey = keys[key];
+    if (properKey === undefined) {
       console.warn('Unhandled keyForLink', key);
     }
 
