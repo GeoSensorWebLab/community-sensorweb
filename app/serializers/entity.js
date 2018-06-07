@@ -1,7 +1,14 @@
+import { assert, warn } from '@ember/debug';
 import DS from 'ember-data';
 
 export default DS.JSONSerializer.extend({
   primaryKey: '@iot.id',
+
+  extractMeta(store, typeClass, payload) {
+    if (payload && payload['@iot.count'] !== undefined) {
+      return { count: payload['@iot.count'] };
+    }
+  },
 
   // Override to only extract navigation links from SensorThings API
   // Expanded records not supported yet.
