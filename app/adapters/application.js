@@ -6,14 +6,14 @@ export default DS.RESTAdapter.extend({
   namespace: config.APP.staPath,
   defaultSerializer: 'entity',
 
-  _buildURL: function(type, id) {
+  buildURL: function(modelName, id, snapshot, requestType, query) {
     var url = [];
     var host = this.get('host');
     var prefix = this.urlPrefix();
     var path;
 
-    if (type) {
-      path = this.pathForType(type);
+    if (modelName) {
+      path = this.pathForType(modelName);
       if (path) { url.push(path); }
     }
 
