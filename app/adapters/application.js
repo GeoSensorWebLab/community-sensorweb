@@ -41,6 +41,8 @@ export default DS.RESTAdapter.extend({
       return "Locations";
       case "observation":
       return "Observations";
+      case "observed-property":
+      return "ObservedProperties";
       case "sensor":
       return "Sensors";
       case "thing":

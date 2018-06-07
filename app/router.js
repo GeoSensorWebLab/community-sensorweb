@@ -7,6 +7,7 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  this.route('observed-properties', { path: '/observed-properties' });
 });
 
 export default Router;
