@@ -4,6 +4,16 @@ import DS from 'ember-data';
 export default DS.JSONSerializer.extend({
   primaryKey: '@iot.id',
 
+  // If the payload contains any top-level pagination links, then extract them
+  // to a JSON API compatible `links` object
+  extractLinks(payload) {
+    if (payload['@iot.nextLink']) {
+      return {
+        next: payload['@iot.nextLink']
+      };
+    }
+  },
+
   extractMeta(store, typeClass, payload) {
     if (payload && payload['@iot.count'] !== undefined) {
       return { count: payload['@iot.count'] };
@@ -65,6 +75,15 @@ export default DS.JSONSerializer.extend({
         typeof(meta) === 'object'
       );
       documentHash.meta = meta;
+    }
+
+    let links = this.extractLinks(payload);
+    if (links) {
+      assert(
+        'The `links` returned from `extractLinks` has to be an object, not "' + typeof(links) + '".',
+        typeof(links) === 'object'
+      );
+      documentHash.links = links;
     }
 
     if (isSingle || requestType === "findBelongsTo") {
