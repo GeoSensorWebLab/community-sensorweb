@@ -9,6 +9,9 @@ export default DS.Model.extend({
 
   thing: DS.belongsTo('thing'),
   observations: DS.hasMany('observation'),
+  observedProperty: DS.belongsTo('observed-property'),
+
+  // Computed Properties
 
   lastObservation: computed('observations', function() {
     return this.get('observations.firstObject');

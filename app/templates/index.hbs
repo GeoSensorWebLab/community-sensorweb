@@ -52,7 +52,7 @@
       <h3>Last Update:<br>{{activeStation.datastreams.firstObject.lastObservation.resultTime}}</h3>
     </div>
 
-    {{live-panel name="temperature" datastream=activeStation.datastreams.firstObject activeDatastream=activeDatastream}}
+    {{live-panel name="temperature" datastream=activeStation.airTemperature activeDatastream=activeDatastream}}
 
     <div class="panel panel-wind">
       <h2>8 Kts NNW</h2>
