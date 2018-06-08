@@ -54,7 +54,7 @@
 
     {{live-panel name="temperature" datastream=activeStation.airTemperature activeDatastream=activeDatastream}}
 
-    {{live-panel name="wind" datastream=activeStation.windSpeed activeDatastream=activeDatastream}}
+    {{live-panel-wind name="wind" speed=activeStation.windSpeed direction=activeStation.windDirection activeDatastream=activeDatastream}}
 
     <div class="panel panel-pressure">
       <h2>101.33 kPa</h2>

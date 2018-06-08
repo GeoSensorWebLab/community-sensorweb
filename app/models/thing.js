@@ -15,6 +15,14 @@ const PropertyMatchers = {
                     'max_air_temp_pst24hrs',
                     'min_air_temp_pst24hrs'
                   ],
+  windDirection:  [
+                    'avg_wnd_dir_10m_pst1hr',
+                    'avg_wnd_dir_10m_mt50-60',
+                    'avg_wnd_dir_10m_mt58-60',
+                    'wnd_dir_10m_pst1hr_pk_spd',
+                    'wnd_dir_10m_pst1hr_max_spd',
+                    'wnd_dir_10m_mt50-60_max_spd'
+                  ],
   windSpeed:  [
                 'avg_wnd_spd_10m_pst1hr',
                 'avg_wnd_spd_10m_mt50-60',
@@ -79,6 +87,10 @@ export default DS.Model.extend({
 
   lastLocation: computed('locations', function() {
     return this.get('locations.firstObject');
+  }),
+
+  windDirection: computed('datastreams.[]', function() {
+    return this.bestMatchByObservedProperty('windDirection');
   }),
 
   windSpeed: computed('datastreams.[]', function() {
