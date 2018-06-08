@@ -14,7 +14,17 @@ const PropertyMatchers = {
                     'air_temp_12hrs_ago',
                     'max_air_temp_pst24hrs',
                     'min_air_temp_pst24hrs'
-                  ]
+                  ],
+  windSpeed:  [
+                'avg_wnd_spd_10m_pst1hr',
+                'avg_wnd_spd_10m_mt50-60',
+                'avg_wnd_spd_10m_mt58-60',
+                'avg_wnd_spd_pcpn_gag_mt50-60',
+                'max_pk_wnd_spd_10m_pst1hr',
+                'max_wnd_spd_10m_pst1hr',
+                'max_wnd_gst_spd_10m_mt50-60',
+                'max_wnd_spd_10m_mt50-60'
+              ]
 };
 
 export default DS.Model.extend({
@@ -65,5 +75,43 @@ export default DS.Model.extend({
 
   lastLocation: computed('locations', function() {
     return this.get('locations.firstObject');
+  }),
+
+  // Retrieve all the observed properties to find the best one to match
+  // wind speed.
+  windSpeed: computed('datastreams.[]', function() {
+    let p = new Promise((resolve) => {
+      this.get('datastreams').then(datastreams => {
+
+        // Map the Observed Property names to Datastream models.
+        // Because this goes over an async relationship, we are actually
+        // creating an array of Promises.
+        let maps = datastreams.map(datastream => {
+          return datastream.get('observedProperty').then((op) => {
+            return [op.get('name'), datastream];
+          });
+        });
+
+        // Once all the promises have been resolved, check each observed
+        // property name against the PropertyMatcher list *in order*, breaking
+        // on the first match. This ensures that only a single resolve is
+        // called.
+        Promise.all(maps).then((maps) => {
+          for (let i = 0; i < PropertyMatchers.windSpeed.length; i++) {
+            let p = PropertyMatchers.windSpeed[i];
+            let match = maps.find((map) => {
+              return map[0] === p;
+            });
+
+            if (match) {
+              resolve(match[1]);
+              return;
+            }
+          }
+        });
+      });
+    });
+
+    return DS.PromiseObject.create({ promise: p });
   })
 });
