@@ -171,5 +171,5 @@ main {
 
 #observed-property-list {
   max-height: 100%;
-  overflow: scroll;
+  overflow-y: auto;
 }
