@@ -168,3 +168,8 @@ main {
 .dir225 {
   transform: rotate(45deg);
 }
+
+#observed-property-list {
+  max-height: 100%;
+  overflow: scroll;
+}

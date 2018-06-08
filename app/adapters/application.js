@@ -13,7 +13,7 @@ export default DS.RESTAdapter.extend({
     var path;
 
     if (modelName) {
-      path = this.pathForType(modelName);
+      path = this.pathForModelName(modelName);
       if (path) { url.push(path); }
     }
 
@@ -33,7 +33,7 @@ export default DS.RESTAdapter.extend({
   },
 
   // Override how model names are translated to URL Entity Paths
-  pathForType: function(type) {
+  pathForModelName: function(type) {
     switch(type) {
       case "datastream":
       return "Datastreams";
