@@ -4,8 +4,14 @@ import DS from 'ember-data';
 export default DS.JSONSerializer.extend({
   primaryKey: '@iot.id',
 
-  // If the payload contains any top-level pagination links, then 
-  // extract them to a JSON API compatible `links` object
+  /**
+    Extract any SensorThings API links from the payload into a JSON-API
+    compatible links object.
+    
+    @method extractLinks
+    @param {Object} payload
+    @return {Object} links
+  */
   extractLinks(payload) {
     if (payload['@iot.nextLink']) {
       return {
@@ -14,14 +20,37 @@ export default DS.JSONSerializer.extend({
     }
   },
 
+  /**
+    `extractMeta` is used to deserialize any meta information in the
+    adapter payload. By default Ember Data expects meta information to
+    be located on the `meta` property of the payload object.
+    
+    This method has been overridden for SensorThings API. 
+
+    @method extractMeta
+    @param {DS.Store} store
+    @param {DS.Model} modelClass
+    @param {Object} payload
+  */
   extractMeta(store, typeClass, payload) {
     if (payload && payload['@iot.count'] !== undefined) {
       return { count: payload['@iot.count'] };
     }
   },
 
-  // Override to only extract navigation links from SensorThings API
-  // Expanded records not supported yet.
+  /**
+    Returns a relationship formatted as a JSON-API "relationship 
+    object".
+
+    http://jsonapi.org/format/#document-resource-object-relationships
+
+    This method has been overridden for SensorThings API.
+
+    @method extractRelationship
+    @param {Object} relationshipModelName
+    @param {Object} relationshipHash
+    @return {Object}
+  */
   extractRelationships(modelClass, resourceHash) {
     let relationships = {};
 
@@ -43,6 +72,17 @@ export default DS.JSONSerializer.extend({
     return relationships;
   },
 
+  /**
+   `keyForLink` can be used to define a custom key when deserializing 
+   link properties.
+
+   This method has been overridden for SensorThings API.
+
+   @method keyForLink
+   @param {String} key
+   @param {String} kind `belongsTo` or `hasMany`
+   @return {String} normalized key
+  */
   keyForLink(key, kind) {
     const keys = {
       'datastream':       'Datastream',
@@ -62,6 +102,54 @@ export default DS.JSONSerializer.extend({
     return `${properKey}@iot.navigationLink`;
   },
 
+   /**
+    In SensorThings API, a request may be paginated server-side. The 
+    Ember Adapter is set up to retrieve the pages recursively up to an
+    optionally specified limit, and return an array of responses to the
+    Ember Store, which passes that to here as the payload.
+
+    An array of responses must be reduced to a single payload object
+    that can be normalized using the generic normalizer.
+
+    This method has been overridden for SensorThings API.
+
+    @method normalizeArrayResponse
+    @param {DS.Store} store
+    @param {DS.Model} primaryModelClass
+    @param {Object} payload
+    @param {String|Number} id
+    @param {String} requestType
+    @return {Object} JSON-API Document
+  */
+  normalizeArrayResponse(store, primaryModelClass, payload, id, requestType) {
+    return payload.reduce((newPayload, aPayload) => {
+      let normalized = this.normalizeResponseGeneric(store, primaryModelClass, aPayload, id, requestType, false);
+      newPayload.data = newPayload.data.concat(normalized.data);
+      return newPayload;
+    }, {
+      data: []
+    });
+  },
+
+  /**
+    The `normalizeResponse` method is used to normalize a payload from the
+    server to a JSON-API Document.
+
+    http://jsonapi.org/format/#document-structure
+
+    This method delegates to a more specific normalize method based on
+    the `requestType`.
+
+    This method has been overridden for SensorThings API.
+
+    @method normalizeResponse
+    @param {DS.Store} store
+    @param {DS.Model} primaryModelClass
+    @param {Object} payload
+    @param {String|Number} id
+    @param {String} requestType
+    @return {Object} JSON-API Document
+  */
   normalizeResponse(store, primaryModelClass, payload, id, requestType) {
     switch (requestType) {
       case 'findRecord':
@@ -77,7 +165,7 @@ export default DS.JSONSerializer.extend({
       case 'findMany':
         return this.normalizeResponseGeneric(...arguments);
       case 'query':
-        return this.normalizeFindAllResponse(...arguments);
+        return this.normalizeQueryResponse(...arguments);
       case 'createRecord':
         return this.normalizeResponseGeneric(...arguments);
       case 'deleteRecord':
@@ -87,20 +175,57 @@ export default DS.JSONSerializer.extend({
     }
   },
 
-  // To handle server-side pagination, we have the adapter do a series 
-  // of GET requests and resolve the promise to the store with an array 
-  // of responses. Each of those array items is normalized here.
+  /**
+    Normalize a findAll response. As this is a SensorThings API entity
+    collection, it is an array of one or more responses.
+
+    This method has been overridden for SensorThings API.
+
+    @method normalizeQueryResponse
+    @param {DS.Store} store
+    @param {DS.Model} primaryModelClass
+    @param {Object} payload
+    @param {String|Number} id
+    @param {String} requestType
+    @return {Object} JSON-API Document
+  */
   normalizeFindAllResponse(store, primaryModelClass, payload, id, requestType) {
-    return payload.reduce((newPayload, aPayload) => {
-      let normalized = this.normalizeResponseGeneric(store, primaryModelClass, aPayload, id, requestType, false);
-      newPayload.data = newPayload.data.concat(normalized.data);
-      return newPayload;
-    }, {
-      data: []
-    });
+    return this.normalizeArrayResponse(...arguments);
   },
 
-  // Customize method to handle payload.value array
+  /**
+    Normalize a query response. As this is a SensorThings API entity
+    collection, it is an array of one or more responses.
+
+    This method has been overridden for SensorThings API.
+
+    @method normalizeQueryResponse
+    @param {DS.Store} store
+    @param {DS.Model} primaryModelClass
+    @param {Object} payload
+    @param {String|Number} id
+    @param {String} requestType
+    @return {Object} JSON-API Document
+  */
+  normalizeQueryResponse(store, primaryModelClass, payload, id, requestType) {
+    return this.normalizeArrayResponse(...arguments);
+  },
+
+   /*
+    Method based on DS.RestSerializer's generic response normalizer.
+
+    This method has been re-defined for SensorThings API.
+
+    @method normalizeResponseGeneric
+    @private
+    @param {DS.Store} store
+    @param {DS.Model} primaryModelClass
+    @param {Object} payload
+    @param {String|Number} id
+    @param {String} requestType
+    @param {Boolean} isSingle
+    @return {Object} JSON-API Document
+  */
   normalizeResponseGeneric(store, primaryModelClass, payload, id, requestType, isSingle) {
     let documentHash = {
       data: null
