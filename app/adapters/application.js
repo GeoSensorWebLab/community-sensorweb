@@ -32,6 +32,33 @@ export default DS.RESTAdapter.extend({
     return url;
   },
 
+  // Override findAll to return an array of responses instead of a 
+  // single response. This handles server-side pagination, but requires
+  // the serializer to parse an array of responses.
+  findAll(store, type, sinceToken, snapshotRecordArray) {
+    let url = this.buildURL(type.modelName, null, snapshotRecordArray, 'findAll');
+    return this.getNextPage(url);
+  },
+
+  findHasMany(store, snapshot, url, relationship) {
+    console.log("ADAPTER findHasMany")
+    return this._super(...arguments);
+  },
+
+  // Continuously follow nextLink, and pushing resolved data onto an
+  // array
+  getNextPage(url) {
+    return this.ajax(url, 'GET').then((data) => {
+      if (data['@iot.nextLink']) {
+        return this.getNextPage(data['@iot.nextLink']).then((moreDataArray) => {
+          return [data].concat(moreDataArray);
+        });
+      } else {
+        return [data];
+      }
+    });
+  },
+
   // Override how model names are translated to URL Entity Paths
   pathForModelName: function(type) {
     switch(type) {

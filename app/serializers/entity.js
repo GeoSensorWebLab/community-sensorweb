@@ -4,8 +4,8 @@ import DS from 'ember-data';
 export default DS.JSONSerializer.extend({
   primaryKey: '@iot.id',
 
-  // If the payload contains any top-level pagination links, then extract them
-  // to a JSON API compatible `links` object
+  // If the payload contains any top-level pagination links, then 
+  // extract them to a JSON API compatible `links` object
   extractLinks(payload) {
     if (payload['@iot.nextLink']) {
       return {
@@ -62,8 +62,46 @@ export default DS.JSONSerializer.extend({
     return `${properKey}@iot.navigationLink`;
   },
 
+  normalizeResponse(store, primaryModelClass, payload, id, requestType) {
+    switch (requestType) {
+      case 'findRecord':
+        return this.normalizeResponseGeneric(...arguments);
+      case 'queryRecord':
+        return this.normalizeResponseGeneric(...arguments);
+      case 'findAll':
+        return this.normalizeFindAllResponse(...arguments);
+      case 'findBelongsTo':
+        return this.normalizeResponseGeneric(...arguments);
+      case 'findHasMany':
+        return this.normalizeResponseGeneric(...arguments);
+      case 'findMany':
+        return this.normalizeResponseGeneric(...arguments);
+      case 'query':
+        return this.normalizeResponseGeneric(...arguments);
+      case 'createRecord':
+        return this.normalizeResponseGeneric(...arguments);
+      case 'deleteRecord':
+        return this.normalizeResponseGeneric(...arguments);
+      case 'updateRecord':
+        return this.normalizeResponseGeneric(...arguments);
+    }
+  },
+
+  // To handle server-side pagination, we have the adapter do a series 
+  // of GET requests and resolve the promise to the store with an array 
+  // of responses. Each of those array items is normalized here.
+  normalizeFindAllResponse(store, primaryModelClass, payload, id, requestType) {
+    return payload.reduce((newPayload, aPayload) => {
+      let normalized = this.normalizeResponseGeneric(store, primaryModelClass, aPayload, id, requestType, false);
+      newPayload.data = newPayload.data.concat(normalized.data);
+      return newPayload;
+    }, {
+      data: []
+    });
+  },
+
   // Customize method to handle payload.value array
-  normalizeResponse(store, primaryModelClass, payload, id, requestType, isSingle) {
+  normalizeResponseGeneric(store, primaryModelClass, payload, id, requestType, isSingle) {
     let documentHash = {
       data: null
     };
