@@ -6,6 +6,29 @@ export default DS.RESTAdapter.extend({
   namespace: config.APP.staPath,
   defaultSerializer: 'entity',
 
+  /**
+    Builds a URL for a given type and optional ID.
+
+    By default, it pluralizes the type's name according to SensorThings
+    API rules, as defined in 
+    [pathForModelName](#method_pathForModelName).
+
+    If an ID is specified, it adds the ID to the path generated
+    for the type.
+
+    When called by RESTAdapter.findMany() the `id` and `snapshot` 
+    parameters will be arrays of ids and snapshots.
+
+    Note: The `query` option is currently discarded.
+
+    @method buildURL
+    @param {String} modelName
+    @param {(String|Array|Object)} id single id or array of ids or query
+    @param {(DS.Snapshot|Array)} snapshot single snapshot or array of snapshots
+    @param {String} requestType
+    @param {Object} query object of query parameters to send for query requests.
+    @return {String} url
+  */
   buildURL: function(modelName, id, snapshot, requestType, query) {
     var url = [];
     var host = this.get('host');
@@ -32,19 +55,73 @@ export default DS.RESTAdapter.extend({
     return url;
   },
 
-  // Override findAll to return an array of responses instead of a 
-  // single response. This handles server-side pagination, but requires
-  // the serializer to parse an array of responses.
+   /**
+    Called by the store in order to fetch an array of responses for all
+    of the records for a given type.
+
+    The `findAll` method makes recursive Ajax (HTTP GET) requests to a 
+    URL computed by `buildURL`, and returns a promise for the resulting 
+    payload. It follows the SensorThings API `@iot.nextLink` to retrieve
+    all records.
+
+    Note: This will retrieve **ALL** records without any limit, so it 
+    will not stop for very large server-side collections!
+
+    @method findAll
+    @param {DS.Store} store
+    @param {DS.Model} type
+    @param {String} sinceToken
+    @param {DS.SnapshotRecordArray} snapshotRecordArray
+    @return {Promise} promise
+  */
   findAll(store, type, sinceToken, snapshotRecordArray) {
     let url = this.buildURL(type.modelName, null, snapshotRecordArray, 'findAll');
     return this.getNextPage(url);
   },
 
+  /**
+    Called by the store in order to fetch a JSON array for
+    the unloaded records in a has-many relationship that were originally
+    specified as a URL (inside of `links`).
+
+    The `findHasMany` method will make an Ajax (HTTP GET) request to the 
+    originally specified URL.
+
+    The format of your `links` value will influence the final request 
+    URL via the `urlPrefix` method:
+
+    * Links beginning with `//`, `http://`, `https://`, will be used as 
+    is, with no further manipulation.
+
+    * Links beginning with a single `/` will have the current adapter's 
+    `host` value prepended to it.
+
+    * Links with no beginning `/` will have a parentURL prepended to it, 
+    via the current adapter's `buildURL`.
+
+    @method findHasMany
+    @param {DS.Store} store
+    @param {DS.Snapshot} snapshot
+    @param {String} url
+    @param {Object} relationship meta object describing the relationship
+    @return {Promise} promise
+  */
   findHasMany(store, snapshot, url, relationship) {
     console.log("ADAPTER findHasMany")
     return this._super(...arguments);
   },
 
+  /**
+    Returns a boolean true/false if the count equals or exceeds the 
+    limit. Returns false if either is undefined, in the case where an
+    unlimited GET is being performed.
+
+    @method atResultsLimit
+    @private
+    @param {Integer} count
+    @param {Integer} limit
+    @return {Boolean} boolean
+  */
   atResultsLimit(count, limit) {
     if (count === undefined || limit === undefined) {
       return false;
@@ -53,8 +130,28 @@ export default DS.RESTAdapter.extend({
     }
   },
 
-  // Continuously follow nextLink, and pushing resolved data onto an
-  // array
+  /**
+    Performs an AJAX GET request for `url`. If the URL has an 
+    `@iot.nextLink` and a record limit has not been exceeded, then the
+    function calls itself on the next link and concatenates the array
+    of responses.
+
+    Return an *array* of SensorThings API responses, which requires a
+    custom normalizer in the serializer.
+
+    If `options.limit` is specified, then the recursive GET will stop
+    when this limit is equaled or exceeded.
+
+    If `options.total` is specified, you may get weird results. It is 
+    meant for this function to keep track of how many results have been
+    retrieved during recursion.
+
+    @method getNextPage
+    @private
+    @param {String} url
+    @param {Object} options
+    @return {Promise} promise
+  */
   getNextPage(url, options) {
     if (options.total === undefined) {
       options.total = 0;
@@ -73,7 +170,15 @@ export default DS.RESTAdapter.extend({
     });
   },
 
-  // Override how model names are translated to URL Entity Paths
+  /**
+    Specify a custom mapping of Ember Data model names to SensorThings
+    API entity path names.
+
+    @method pathForModelName
+    @private
+    @param {String} type
+    @return {String} path
+  */
   pathForModelName: function(type) {
     switch(type) {
       case "datastream":
