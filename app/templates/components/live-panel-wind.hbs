@@ -1,4 +1,8 @@
+{{#if direction}}
 <h2>
   {{format-wind-direction direction.lastObservation.result direction.unitOfMeasurement.name}}
   {{speed.lastObservation.result}} {{speed.unitOfMeasurement.name}}
 </h2>
+{{else}}
+<h2>No Wind Data</h2>
+{{/if}}
