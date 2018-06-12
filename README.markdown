@@ -11,6 +11,10 @@ Arctic Sensor Web is a part of the [Arctic Connect][] platform.
 
 The site will be deployed to a public URL and can be viewed by anyone for free. The URL will be added here when the site is online.
 
+Special Pages:
+
+`/observed-properties` - Will retrieve ALL the Observed Properties from the SensorThings API backend, using pagination links to download all records. If there are a lot of records this could take awhile.
+
 ### What makes this different than the other Arctic Sensor Web Portal?
 
 TODO: Compare to [other portal][http://sensorthings.arcticconnect.org/#/home], when to use that one and when to use this one
