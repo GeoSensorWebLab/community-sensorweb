@@ -77,7 +77,7 @@ export default DS.JSONSerializer.extend({
       case 'findMany':
         return this.normalizeResponseGeneric(...arguments);
       case 'query':
-        return this.normalizeResponseGeneric(...arguments);
+        return this.normalizeFindAllResponse(...arguments);
       case 'createRecord':
         return this.normalizeResponseGeneric(...arguments);
       case 'deleteRecord':
