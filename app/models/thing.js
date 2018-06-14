@@ -18,6 +18,11 @@ const PropertyMatchers = {
                     'max_air_temp_pst24hrs',
                     'min_air_temp_pst24hrs'
                   ],
+  relativeHumidity: [
+                      'rel_hum',
+                      'max_rel_hum_pst1hr',
+                      'min_rel_hum_pst1hr'
+  ],
   visibility: [
                 'vis',
                 'max_vis_mt50-60',
@@ -99,6 +104,10 @@ export default DS.Model.extend({
 
   lastLocation: computed('locations', function() {
     return this.get('locations.firstObject');
+  }),
+
+  relativeHumidity: computed('datastreams.[]', function() {
+    return this.bestMatchByObservedProperty('relativeHumidity');
   }),
 
   visibility: computed('datastreams.[]', function() {
