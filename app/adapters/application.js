@@ -84,8 +84,13 @@ export default DS.RESTAdapter.extend({
     the unloaded records in a has-many relationship that were originally
     specified as a URL (inside of `links`).
 
-    The `findHasMany` method will make an Ajax (HTTP GET) request to the 
-    originally specified URL.
+    The `findHasMany` method will make recursive Ajax (HTTP GET) 
+    requests to the originally specified URL and any further nextLink.
+
+    On the DS.Model relationship, a custom options object can contain
+    the `limit` property which will set a minimum limit on the number
+    of records to return, if that many records are available on the
+    remote server.
 
     The format of your `links` value will influence the final request 
     URL via the `urlPrefix` method:
@@ -107,8 +112,20 @@ export default DS.RESTAdapter.extend({
     @return {Promise} promise
   */
   findHasMany(store, snapshot, url, relationship) {
-    console.log("ADAPTER findHasMany")
-    return this._super(...arguments);
+    let id = snapshot.id;
+    let type = snapshot.modelName;
+
+    url = this.urlPrefix(url, this.buildURL(type, id, snapshot, 'findHasMany'));
+
+    let options = {
+      limit: relationship.options.limit
+    };
+
+    if (options.limit === undefined) {
+      options.limit = 50;
+    }
+
+    return this.getNextPage(url, options);
   },
 
   /**
@@ -123,7 +140,7 @@ export default DS.RESTAdapter.extend({
     @return {Boolean} boolean
   */
   atResultsLimit(count, limit) {
-    if (count === undefined || limit === undefined) {
+    if (count === undefined || limit === undefined || limit === 0) {
       return false;
     } else {
       return (count >= limit);
@@ -140,7 +157,8 @@ export default DS.RESTAdapter.extend({
     custom normalizer in the serializer.
 
     If `options.limit` is specified, then the recursive GET will stop
-    when this limit is equaled or exceeded.
+    when this limit is equaled or exceeded. If limit is 0 or undefined,
+    then no limit will be applied.
 
     If `options.total` is specified, you may get weird results. It is 
     meant for this function to keep track of how many results have been

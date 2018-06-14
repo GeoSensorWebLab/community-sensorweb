@@ -161,7 +161,7 @@ export default DS.JSONSerializer.extend({
       case 'findBelongsTo':
         return this.normalizeResponseGeneric(...arguments);
       case 'findHasMany':
-        return this.normalizeResponseGeneric(...arguments);
+        return this.normalizeFindHasManyResponse(...arguments);
       case 'findMany':
         return this.normalizeResponseGeneric(...arguments);
       case 'query':
@@ -190,6 +190,24 @@ export default DS.JSONSerializer.extend({
     @return {Object} JSON-API Document
   */
   normalizeFindAllResponse(store, primaryModelClass, payload, id, requestType) {
+    return this.normalizeArrayResponse(...arguments);
+  },
+
+  /**
+    Normalize a findHasMany response. As this is a SensorThings API 
+    entity collection, it is an array of one or more responses.
+
+    This method has been overridden for SensorThings API.
+
+    @method normalizeFindHasManyResponse
+    @param {DS.Store} store
+    @param {DS.Model} primaryModelClass
+    @param {Object} payload
+    @param {String|Number} id
+    @param {String} requestType
+    @return {Object} JSON-API Document
+  */
+  normalizeFindHasManyResponse(store, primaryModelClass, payload, id, requestType) {
     return this.normalizeArrayResponse(...arguments);
   },
 

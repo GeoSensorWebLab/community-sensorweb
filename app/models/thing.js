@@ -40,8 +40,8 @@ export default DS.Model.extend({
   description: DS.attr(),
   properties: DS.attr(),
 
-  datastreams: DS.hasMany('datastream'),
-  locations: DS.hasMany('location'),
+  datastreams: DS.hasMany('datastream', { limit: 100 }),
+  locations: DS.hasMany('location', { limit: 5 }),
 
   // Retrieve all the observed properties to find the best one to match
   // a given observed property category.
