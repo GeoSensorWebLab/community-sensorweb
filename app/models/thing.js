@@ -18,6 +18,11 @@ const PropertyMatchers = {
                     'max_air_temp_pst24hrs',
                     'min_air_temp_pst24hrs'
                   ],
+  visibility: [
+                'vis',
+                'max_vis_mt50-60',
+                'min_vis_mt50-60'
+              ],
   windDirection:  [
                     'avg_wnd_dir_10m_pst1hr',
                     'avg_wnd_dir_10m_mt50-60',
@@ -94,6 +99,10 @@ export default DS.Model.extend({
 
   lastLocation: computed('locations', function() {
     return this.get('locations.firstObject');
+  }),
+
+  visibility: computed('datastreams.[]', function() {
+    return this.bestMatchByObservedProperty('visibility');
   }),
 
   windDirection: computed('datastreams.[]', function() {
