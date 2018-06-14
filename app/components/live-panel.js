@@ -9,6 +9,11 @@ export default Component.extend({
 
   activeDatastream: null,
   datastream: null,
+  isLoading: true,
+
+  init() {
+    this._super(...arguments);
+  },
 
   didReceiveAttrs() {
     this._super(...arguments);
@@ -17,5 +22,9 @@ export default Component.extend({
     } else {
       this.set('isActivePanel', false);
     }
+
+    this.get('datastream').then(() => {
+      this.set('isLoading', false);
+    });
   }
 });

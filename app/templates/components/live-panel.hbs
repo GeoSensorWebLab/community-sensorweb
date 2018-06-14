@@ -1,1 +1,7 @@
+{{#if isLoading}}
+<h2>Loading&hellip;</h2>
+{{else if datastream}}
 <h2>{{datastream.lastObservation.result}} {{datastream.unitOfMeasurement.name}}</h2>
+{{else}}
+<h2>No Data</h2>
+{{/if}}
