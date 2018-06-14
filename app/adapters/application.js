@@ -153,6 +153,9 @@ export default DS.RESTAdapter.extend({
     @return {Promise} promise
   */
   getNextPage(url, options) {
+    if (options === undefined) {
+      options = {};
+    }
     if (options.total === undefined) {
       options.total = 0;
     }
