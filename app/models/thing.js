@@ -4,6 +4,9 @@ import { computed } from '@ember/object';
 // Mapping of property names from SensorThings API to simple observed property
 // categories. Arrange properties in order of most desired to least desired.
 const PropertyMatchers = {
+  airPressure:  [
+                  'stn_pres'
+                ],
   airTemperature: [
                     'air_temp',
                     'avg_air_temp_pst1hr',
@@ -80,6 +83,10 @@ export default DS.Model.extend({
 
     return DS.PromiseObject.create({ promise: p });
   },
+
+  airPressure: computed('datastreams.[]', function() {
+    return this.bestMatchByObservedProperty('airPressure');
+  }),
 
   airTemperature: computed('datastreams.[]', function() {
     return this.bestMatchByObservedProperty('airTemperature');

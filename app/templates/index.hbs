@@ -52,13 +52,11 @@
       <h3>Last Update:<br>{{activeStation.datastreams.firstObject.lastObservation.resultTime}}</h3>
     </div>
 
-    {{live-panel name="temperature" datastream=activeStation.airTemperature activeDatastream=activeDatastream}}
+    {{live-panel name="air-temperature" datastream=activeStation.airTemperature activeDatastream=activeDatastream}}
 
     {{live-panel-wind name="wind" speed=activeStation.windSpeed direction=activeStation.windDirection activeDatastream=activeDatastream}}
 
-    <div class="panel panel-pressure">
-      <h2>101.33 kPa</h2>
-    </div>
+    {{live-panel name="air-pressure" datastream=activeStation.airPressure activeDatastream=activeDatastream}}
 
     <div class="panel panel-visibility">
       <h2>64 km</h2>
