@@ -7,9 +7,9 @@ export default DS.Model.extend({
   unitOfMeasurement: DS.attr(),
   observationType: DS.attr(),
 
-  thing: DS.belongsTo('thing'),
-  observations: DS.hasMany('observation'),
+  observations: DS.hasMany('observation', { limit: 10 }),
   observedProperty: DS.belongsTo('observed-property'),
+  thing: DS.belongsTo('thing'),
 
   // Computed Properties
 
