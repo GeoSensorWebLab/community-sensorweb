@@ -2,6 +2,8 @@ import Component from '@ember/component';
 import Highcharts from 'highcharts';
 
 export default Component.extend({
+  datastream: null,
+
   didInsertElement() {
     this._super(...arguments);
     let chart = Highcharts.chart('chart', {
@@ -10,21 +12,53 @@ export default Component.extend({
       },
 
       title: {
-        text: "Howdy"
+        text: "Loading…"
       },
 
-      series: [{
-        name: "asdf",
-        data: [1,2,3,4],
-        pointStart: Date.UTC(2018, 4, 14, 22),
-        pointInterval: 3600 * 1000,
-        tooltip: {
-          valueDecimals: 1,
-          valueSuffix: "C"
+      xAxis: {
+        type: 'datetime',
+        title: {
+          text: 'Date (UTC)'
         }
-      }]
+      }
     });
 
     this.set('chart', chart);
+    this.get('datastream').then((datastream) => {
+
+      // Load datastream and observed-property details into chart
+      let propertyName = datastream.get('observedProperty.name');
+      let unit = datastream.get('unitOfMeasurement').name;
+      let chart = this.get('chart');
+
+      chart.setTitle({ text: datastream.get('name') });
+      chart.showLoading();
+
+      chart.yAxis[0].setTitle({
+        text: `${propertyName} (${unit})`
+      });
+
+      datastream.recentObservations().then((observations) => {
+        // Convert Observations to data points
+        let seriesData = observations.map((observation) => {
+          let timestamp = new Date(observation.get('phenomenonTime'));
+          let value = parseFloat(observation.get('result'));
+          return [+timestamp, value];
+        });
+
+        // Ensure data is sorted by date ascending
+        seriesData = seriesData.sort((x, y) => {
+          return x[0] - y[0];
+        });
+
+        chart.addSeries({
+          name: propertyName,
+          data: seriesData,
+          tooltip: {
+            valueSuffix: unit
+          }
+        });
+      });
+    });
   }
 });
