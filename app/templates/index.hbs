@@ -48,8 +48,7 @@
     {{else}}
 
     <div class="update-time">
-      <!-- TODO: This should point to the most recently updated datastream that we are extracting for this list -->
-      <h3>Last Update:<br>{{activeStation.datastreams.firstObject.lastObservation.resultTime}}</h3>
+      <h3>Last Update:<br>{{activeStation.lastUpdate.phenomenonTime}}</h3>
     </div>
 
     {{live-panel name="air-temperature" datastream=activeStation.airTemperature activeDatastream=activeDatastream}}

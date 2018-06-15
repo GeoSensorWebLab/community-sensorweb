@@ -4,49 +4,57 @@ import { computed } from '@ember/object';
 // Mapping of property names from SensorThings API to simple observed property
 // categories. Arrange properties in order of most desired to least desired.
 const PropertyMatchers = {
-  airPressure:  [
-                  'stn_pres'
-                ],
-  airTemperature: [
-                    'air_temp',
-                    'avg_air_temp_pst1hr',
-                    'max_air_temp_pst1hr',
-                    'min_air_temp_pst1hr',
-                    'max_air_temp_pst6hrs',
-                    'min_air_temp_pst6hrs',
-                    'air_temp_12hrs_ago',
-                    'max_air_temp_pst24hrs',
-                    'min_air_temp_pst24hrs'
-                  ],
+  airPressure:      [
+                      'stn_pres'
+                    ],
+  airTemperature:   [
+                      'air_temp',
+                      'avg_air_temp_pst1hr',
+                      'max_air_temp_pst1hr',
+                      'min_air_temp_pst1hr',
+                      'max_air_temp_pst6hrs',
+                      'min_air_temp_pst6hrs',
+                      'air_temp_12hrs_ago',
+                      'max_air_temp_pst24hrs',
+                      'min_air_temp_pst24hrs'
+                    ],
   relativeHumidity: [
                       'rel_hum',
                       'max_rel_hum_pst1hr',
                       'min_rel_hum_pst1hr'
-  ],
-  visibility: [
-                'vis',
-                'max_vis_mt50-60',
-                'min_vis_mt50-60'
-              ],
-  windDirection:  [
-                    'avg_wnd_dir_10m_pst1hr',
-                    'avg_wnd_dir_10m_mt50-60',
-                    'avg_wnd_dir_10m_mt58-60',
-                    'wnd_dir_10m_pst1hr_pk_spd',
-                    'wnd_dir_10m_pst1hr_max_spd',
-                    'wnd_dir_10m_mt50-60_max_spd'
-                  ],
-  windSpeed:  [
-                'avg_wnd_spd_10m_pst1hr',
-                'avg_wnd_spd_10m_mt50-60',
-                'avg_wnd_spd_10m_mt58-60',
-                'avg_wnd_spd_pcpn_gag_mt50-60',
-                'max_pk_wnd_spd_10m_pst1hr',
-                'max_wnd_spd_10m_pst1hr',
-                'max_wnd_gst_spd_10m_mt50-60',
-                'max_wnd_spd_10m_mt50-60'
-              ]
+                    ],
+  visibility:       [
+                      'vis',
+                      'max_vis_mt50-60',
+                      'min_vis_mt50-60'
+                    ],
+  windDirection:    [
+                      'avg_wnd_dir_10m_pst1hr',
+                      'avg_wnd_dir_10m_mt50-60',
+                      'avg_wnd_dir_10m_mt58-60',
+                      'wnd_dir_10m_pst1hr_pk_spd',
+                      'wnd_dir_10m_pst1hr_max_spd',
+                      'wnd_dir_10m_mt50-60_max_spd'
+                    ],
+  windSpeed:        [
+                      'avg_wnd_spd_10m_pst1hr',
+                      'avg_wnd_spd_10m_mt50-60',
+                      'avg_wnd_spd_10m_mt58-60',
+                      'avg_wnd_spd_pcpn_gag_mt50-60',
+                      'max_pk_wnd_spd_10m_pst1hr',
+                      'max_wnd_spd_10m_pst1hr',
+                      'max_wnd_gst_spd_10m_mt50-60',
+                      'max_wnd_spd_10m_mt50-60'
+                    ]
 };
+const PrimaryDatastreams = [
+  'airPressure', 
+  'airTemperature', 
+  'relativeHumidity', 
+  'visibility', 
+  'windDirection', 
+  'windSpeed'
+];
 
 export default DS.Model.extend({
   name: DS.attr(),
@@ -106,6 +114,46 @@ export default DS.Model.extend({
 
   lastLocation: computed('locations', function() {
     return this.get('locations.firstObject');
+  }),
+
+  /*
+    Of the primary datastreams, find the latest observation.
+
+    Will update when any primary datastream updates its observations.
+  */
+  lastUpdate: computed('primaryDatastreams.@each.observations', function() {
+    let p = new Promise((resolve, reject) => {
+      Promise.all(this.get('primaryDatastreams')).then((datastreams) => {
+        Promise.all(datastreams.map((datastream) => {
+          if (datastream) {
+            return datastream.get('lastObservation');
+          }
+        })).then(lastObservations => {
+          if (lastObservations === undefined || lastObservations.length === 0) {
+            reject();
+          } else {
+            let sorted = lastObservations.sort((x, y) => {
+              return new Date(x.get('phenomenonTime')) - new Date(y.get('phenomenonTime'));
+            });
+
+            resolve(sorted[sorted.length - 1]);
+          }
+        });
+      });
+    });
+    
+    return DS.PromiseObject.create({
+      promise: p
+    });
+  }),
+
+  /*
+    Shortcut property for the primary datastreams
+  */
+  primaryDatastreams: computed(...PrimaryDatastreams, function() {
+    return PrimaryDatastreams.map((property) => {
+      return this.get(property);
+    });
   }),
 
   relativeHumidity: computed('datastreams.[]', function() {

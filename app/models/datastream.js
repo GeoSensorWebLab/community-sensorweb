@@ -32,7 +32,17 @@ export default DS.Model.extend({
 
   // Computed Properties
 
-  lastObservation: computed('observations', function() {
-    return this.get('observations.firstObject');
-  })
+  /*
+    Sort Observations in ascending phenomenonTime order
+  */
+  sortedObservations: computed('observations.[]', function() {
+    let observations = this.get('observations');
+    return observations.toArray().sort((x, y) => {
+      return new Date(x.get('phenomenonTime')) - new Date(y.get('phenomenonTime'));
+    });
+  }).readOnly(),
+
+  lastObservation: computed('sortedObservations', function() {
+    return this.get('sortedObservations.lastObject');
+  }).readOnly()
 });
