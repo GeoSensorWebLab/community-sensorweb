@@ -25,3 +25,7 @@ In no particular order:
 * Display charts for any of the live data panel items
 * Display charts for any datastream available at a station
 * Improve display of live data panel values: make text fill available space and display observed property name
+* Add "find location" support
+* Improve display of markers when there are hundreds of markers
+* Use different markers for stations not from Environment Canada
+* Extract SensorThings API Adapter/Serializer/Models to an Ember add-on so I can re-use it in the future
