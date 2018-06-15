@@ -1,6 +1,6 @@
 <div id="container">
   {{#leaflet-map id="map-view" lat=lat lng=lng zoom=zoom as |layers|}}
-    {{layers.tile url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"}}
+    {{layers.tile url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" attribution=attribution}}
 
     {{#each model as |thing|}}
       {{#if thing.lastLocation.location}}

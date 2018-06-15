@@ -8,6 +8,8 @@ export default Controller.extend({
   activeDatastream: null,
   activeStation: null,
 
+  attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors © <a href="https://carto.com/attributions">CARTO</a>',
+
   actions: {
     selectStation(stn) {
       let lat = stn.get('lastLocation.location.coordinates')[1];
