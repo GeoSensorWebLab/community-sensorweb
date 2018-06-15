@@ -11,6 +11,25 @@ export default DS.Model.extend({
   observedProperty: DS.belongsTo('observed-property'),
   thing: DS.belongsTo('thing'),
 
+  /*
+    Execute a custom query to SensorThings API to return up to 50 
+    Observations from this Datastream for the past 24 hours, based on
+    the `phenomenonTime`.
+  */
+  recentObservations() {
+    let oneDayAgo = new Date(new Date() - 86400 * 1000);
+
+    return this.get('store').query('observation', {
+      parent: {
+        id: this.get('id'),
+        modelName: 'datastream'
+      },
+      limit: 50,
+      $orderby: 'phenomenonTime desc',
+      $filter: 'phenomenonTime ge ' + oneDayAgo.toISOString()
+    });
+  },
+
   // Computed Properties
 
   lastObservation: computed('observations', function() {

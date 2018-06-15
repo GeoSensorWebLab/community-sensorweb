@@ -50,6 +50,25 @@ export default DS.RESTAdapter.extend({
     if (id) {
       var encoded = encodeURIComponent(id);
       url += `(${encoded})`;
+
+      if (query && query.relationship) {
+        path = this.pathForModelName(query.relationship);
+        url += `/${path}`;
+      }
+    }
+
+    // SensorThings API Query Parameters
+    let q = [];
+    if (query && query['$orderby']) {
+      q.push('$orderby=' + query['$orderby']);
+    }
+
+    if (query && query['$filter']) {
+      q.push('$filter=' + query['$filter']);
+    }
+
+    if (q.length > 0) {
+      url += '?' + q.join('&');
     }
 
     return url;
@@ -241,7 +260,18 @@ export default DS.RESTAdapter.extend({
     @return {Promise} promise
   */
   query(store, type, query) {
-    let url = this.buildURL(type.modelName, null, null, 'query', query);
+    let url;
+
+    // If the parent relationship is specified, we flip the URL around
+    // and build out a sub-collection query. We have to flip it like 
+    // this for the store to properly choose the original model for
+    // deserialization.
+    if (query && query.parent) {
+      query.relationship = type.modelName;
+      url = this.buildURL(query.parent.modelName, query.parent.id, null, 'query', query);
+    } else {
+      url = this.buildURL(type.modelName, query.id, null, 'query', query);
+    }
     
     if (this.sortQueryParams) {
       query = this.sortQueryParams(query);
