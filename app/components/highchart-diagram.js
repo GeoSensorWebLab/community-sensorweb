@@ -6,6 +6,23 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
+    this.resetChart();
+  },
+
+  didUpdateAttrs() {
+    this.resetChart();
+  },
+
+  /*
+    Reset the chart to a basic state and set a handler to download the
+    Datastream details, then download the recent observations and add
+    them as a series.
+  */
+  resetChart() {
+    if (this.get('chart')) {
+      this.get('chart').destroy();
+    }
+
     let chart = Highcharts.chart('chart', {
       rangeSelector: {
         enabled: false
@@ -60,5 +77,13 @@ export default Component.extend({
         });
       });
     });
+  },
+
+  willDestroyElement() {
+    let chart = this.get('chart');
+
+    if (chart) {
+      chart.destroy();
+    }
   }
 });
