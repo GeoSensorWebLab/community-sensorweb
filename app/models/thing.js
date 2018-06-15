@@ -59,7 +59,7 @@ export default DS.Model.extend({
   // Retrieve all the observed properties to find the best one to match
   // a given observed property category.
   bestMatchByObservedProperty(property) {
-    let p = new Promise((resolve) => {
+    let p = new Promise((resolve, reject) => {
       this.get('datastreams').then(datastreams => {
 
         // Map the Observed Property names to Datastream models.
@@ -87,6 +87,8 @@ export default DS.Model.extend({
               return;
             }
           }
+          // If it gets to this point, then no match was found.
+          resolve(null);
         });
       });
     });
