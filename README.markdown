@@ -4,7 +4,7 @@ This repository contains the web front-end for viewing data stored in Arctic Sen
 
 Arctic Sensor Web is a part of the [Arctic Connect][] platform.
 
-[Arctic Connect]: http://arcticconnect.org
+[Arctic Connect]: http://arcticconnect.ca
 [OGC SensorThings API]: http://docs.opengeospatial.org/is/15-078r6/15-078r6.html
 
 ## Accesssing the Site
@@ -17,7 +17,7 @@ Special Pages:
 
 ### What makes this different than the other Arctic Sensor Web Portal?
 
-TODO: Compare to [other portal][http://sensorthings.arcticconnect.org/#/home], when to use that one and when to use this one
+TODO: Compare to [other portal][http://sensorthings.arcticconnect.ca/#/home], when to use that one and when to use this one
 
 ## Prerequisites
 
