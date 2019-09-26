@@ -17,7 +17,7 @@ Special Pages:
 
 ### What makes this different than the other Arctic Sensor Web Portal?
 
-TODO: Compare to [other portal][http://sensorthings.arcticconnect.ca/#/home], when to use that one and when to use this one
+TODO: Compare to [other portal](http://sensorthings.arcticconnect.ca/#/home), when to use that one and when to use this one
 
 ## Prerequisites
 
