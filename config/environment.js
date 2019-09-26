@@ -21,7 +21,7 @@ module.exports = function(environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
       staPath: 'v1.0',
-      staURL: 'https://sensors.arcticconnect.ca:6443'
+      staURL: 'https://arctic-sensors.sensorup.com'
     }
   };
 
