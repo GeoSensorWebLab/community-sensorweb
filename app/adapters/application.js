@@ -67,6 +67,10 @@ export default DS.RESTAdapter.extend({
       q.push('$filter=' + query['$filter']);
     }
 
+    if (query && query['$expand']) {
+      q.push('$expand=' + query['$expand']);
+    }
+
     if (q.length > 0) {
       url += '?' + q.join('&');
     }
