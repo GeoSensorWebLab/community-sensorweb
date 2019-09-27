@@ -58,6 +58,16 @@ export default DS.RESTAdapter.extend({
     }
 
     // SensorThings API Query Parameters
+    url = this.setUrlQueryParams(url, query);
+
+    return url;
+  },
+
+  // Convert Hash of query parameters into URL encoded parameters, add
+  // them to the URL, and return the new URL. DOES NOT check for 
+  // existing query parameters in the URL.
+  // (Shouldn't there be a function for this in Ember Data already?)
+  setUrlQueryParams(url, query) {
     let q = [];
     if (query && query['$orderby']) {
       q.push('$orderby=' + query['$orderby']);
@@ -137,8 +147,10 @@ export default DS.RESTAdapter.extend({
   findHasMany(store, snapshot, url, relationship) {
     let id = snapshot.id;
     let type = snapshot.modelName;
+    let query = relationship.options;
 
     url = this.urlPrefix(url, this.buildURL(type, id, snapshot, 'findHasMany'));
+    url = this.setUrlQueryParams(url, query);
 
     let options = {
       limit: relationship.options.limit
