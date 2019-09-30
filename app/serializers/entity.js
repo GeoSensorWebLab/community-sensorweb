@@ -1,8 +1,15 @@
 import { assert, warn } from '@ember/debug';
+import { typeOf, isNone } from '@ember/utils';
 import DS from 'ember-data';
 
 export default DS.JSONSerializer.extend({
   primaryKey: '@iot.id',
+
+  coerceId(id) {
+    if (id === null || id === undefined || id === '') { return null; }
+    if (typeof id === 'string') { return id; }
+    return '' + id;
+  },
 
   /**
     Extract any SensorThings API links from the payload into a JSON-API
@@ -102,6 +109,40 @@ export default DS.JSONSerializer.extend({
     return `${properKey}@iot.navigationLink`;
   },
 
+  /**
+    `keyForRelationship` can be used to define a custom key when
+    serializing and deserializing relationship properties. By default
+    `JSONSerializer` does not provide an implementation of this method.
+    
+    This method has been overridden for SensorThings API to convert the
+    case of relationships in Ember Data to match the case in SensorThings
+    API entities.
+
+    @method keyForRelationship
+    @param {String} key
+    @param {String} typeClass
+    @param {String} method
+    @return {String} normalized key
+  */
+  keyForRelationship(key, typeClass, method) {
+    const keys = {
+      'datastream':       'Datastream',
+      'datastreams':      'Datastreams',
+      'locations':        'Locations',
+      'observations':     'Observations',
+      'observedProperty': 'ObservedProperty',
+      'thing':            'Thing',
+      'things':           'Things'
+    }
+
+    let properKey = keys[key];
+    if (properKey === undefined) {
+      console.warn('Unhandled keyForLink', key);
+    }
+
+    return properKey;
+  },
+
    /**
     In SensorThings API, a request may be paginated server-side. The 
     Ember Adapter is set up to retrieve the pages recursively up to an
@@ -153,7 +194,8 @@ export default DS.JSONSerializer.extend({
   normalizeResponse(store, primaryModelClass, payload, id, requestType) {
     switch (requestType) {
       case 'findRecord':
-        return this.normalizeResponseGeneric(...arguments);
+        // This is a single record
+        return this.normalizeResponseGeneric(...arguments, true);
       case 'queryRecord':
         return this.normalizeResponseGeneric(...arguments);
       case 'findAll':
