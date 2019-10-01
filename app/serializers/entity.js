@@ -1,8 +1,25 @@
 import DS from 'ember-data';
-import { camelize } from '@ember/string';
+import { camelize, capitalize } from '@ember/string';
 import { isNone, typeOf } from '@ember/utils';
 
 export default DS.JSONAPISerializer.extend({
+  /**
+    Convert a JSON:API data array of resources to a JSON:API 
+    relationship data array of resources (id and type only).
+
+    @method extractRelationshipData
+    @param {Array} dataArray: JSON:API Data Array
+    @return {Array} Relationship Data Array
+  */
+  extractRelationshipData(dataArray) {
+    return dataArray.map((entity) => {
+      return {
+        id:   entity.id,
+        type: entity.type
+      };
+    });
+  },
+
   /**
    `keyForRelationship` maps names of relations between entities from
    SensorThings API (PascalCase) to Ember Data (camelCase).
@@ -46,7 +63,10 @@ export default DS.JSONAPISerializer.extend({
 
     // If payload is an array, parse each set of responses one at a time
     if (typeOf(payload) !== "array") {
-      console.error("Unhandled payload type")
+      let { data, included } = this.normalizeEntity(store, primaryModelClass, payload);
+
+      documentHash.data = data;
+      documentHash.included.push(...included);
     } else {
       // Initialize empty array instead of null value
       documentHash.data = [];
@@ -63,51 +83,114 @@ export default DS.JSONAPISerializer.extend({
           let entities = response.value;
 
           entities.forEach((entity) => {
-            // Convert entity for JSON:API `data` array
-            // TODO: Extract entities retrieved with $expand to the 
-            //       JSON:API `included` array
-            
-            let dataEntity = {
-              id: entity["@iot.id"],
-              type: primaryModelClass.modelName,
-              attributes: entity,
-              relationships: {},
-              links: {}
-            };
+            // Convert entity for JSON:API `data` array            
+            let { data, included } = this.normalizeEntity(store, primaryModelClass, entity);
 
-            // Remove links from attributes
-            Object.keys(dataEntity.attributes).forEach((key) => {
-              let value = dataEntity.attributes[key];
-
-              // For links to related entities
-              if (key.includes("@iot.navigationLink")) {
-                // Get the name of the relationship from the key.
-                // TODO: Find the correct case and pluralization for
-                // mapping between STA and JSON:API and Ember Data
-                let relationshipName = this.keyForRelationship(key.split("@")[0]);
-
-                // We use `related` instead of `self` as it is not a
-                // SensorThings API `@iot.selfLink`.
-                dataEntity.relationships[relationshipName] = {
-                  links: { related: value }
-                };
-                delete dataEntity.attributes[key];
-                
-              } else if (key.includes("@iot.selfLink")) {
-                // Copy the self link to the links object
-                dataEntity.links.self = value;
-                delete dataEntity.attributes[key];
-              }
-            });
-
-            // Remove id from attributes
-            delete dataEntity.attributes["@iot.id"];
-
-            documentHash.data.push(dataEntity);
+            documentHash.data.push(...data);
+            documentHash.included.push(...included);
           });
         }
       });
     }
+
+    return documentHash;
+  },
+
+  /**
+    Convert a SensorThings API entity to resources for JSON:API. Will be
+    called recursively on any entities embedded using `$expand`.
+
+    The `store` is used to determine the class for a model on an entity.
+
+    The `primaryModelClass` is passed in so we know the Ember Data name 
+    of the model type.
+
+    @method normalizeEntity
+    @param {DS.Store} store
+    @param {DS.Model} primaryModelClass
+    @param {Object} entity
+    @return {Object} JSON:API Document
+  */
+  normalizeEntity(store, primaryModelClass, entity) {
+    let documentHash = {
+      data: [],
+      included: []
+    };
+
+    let dataEntity = {
+      id: entity["@iot.id"],
+      type: primaryModelClass.modelName,
+      attributes: entity,
+      relationships: {},
+      links: {}
+    };
+
+    // Remove STA `@iot.id` from attributes
+    delete dataEntity.attributes["@iot.id"];
+
+    // Remove STA navigation links from attributes and put them in
+    // JSON:API links object
+    Object.keys(dataEntity.attributes).forEach((key) => {
+      let value = dataEntity.attributes[key];
+
+      // For links to related entities
+      if (key.includes("@iot.navigationLink")) {
+        // Get the name of the relationship from the key.
+        let relationshipName = this.keyForRelationship(key.split("@")[0]);
+
+        // We use `related` instead of `self` as it is not a 
+        // SensorThings API `@iot.selfLink`.
+        dataEntity.relationships[relationshipName] = {
+          links: { related: value }
+        };
+        delete dataEntity.attributes[key];
+        
+      } else if (key.includes("@iot.selfLink")) {
+        // Copy the self link to the links object
+        dataEntity.links.self = value;
+        delete dataEntity.attributes[key];
+      }
+    });
+
+    // Move any embedded entities to `included` array
+    // and add a `data` object to the relationship
+    primaryModelClass.relationshipsByName.forEach((relationship) => {
+      let staRelationshipName = capitalize(relationship.key);
+      let value = dataEntity.attributes[staRelationshipName];
+
+      if (value !== undefined) {
+        // Collect entity or entities for relationship data
+        let relationshipData;
+
+        if (typeOf(value) !== "array") {
+          let { data, included } = this.normalizeEntity(store, relatedEntityClass, relatedEntity);
+          documentHash.included.push(...data);
+          documentHash.included.push(...included);
+
+          relationshipData = this.extractRelationshipData(data);
+        } else {
+          value.forEach((relatedEntity) => {
+            let relatedEntityClass = store.modelFor(relationship.type);
+            let { data, included } = this.normalizeEntity(store, relatedEntityClass, relatedEntity);
+
+            documentHash.included.push(...data);
+            documentHash.included.push(...included);
+
+            relationshipData = this.extractRelationshipData(data);
+          });
+        }
+
+        // Add a JSON:API relationship data object
+        dataEntity.relationships[relationship.key] = {
+          data: relationshipData
+        };
+
+        // Remove embedded object from data entity attributes
+        delete dataEntity.attributes[staRelationshipName];
+      }
+    });
+
+    documentHash.data.push(dataEntity);
 
     return documentHash;
   },
