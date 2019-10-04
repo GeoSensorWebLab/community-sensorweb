@@ -72,8 +72,15 @@ export default DS.JSONAPISerializer.extend({
     documentHash.data = [];
 
     payload.forEach((response) => {
-      // TODO: Extract meta information such as the collection size
-      // from the STA response
+      // Extract meta data, if available
+      if (response["@iot.count"]) {
+        documentHash.meta = {
+          total: response["@iot.count"]
+        };
+      }
+
+      // Extract entities from response and transform to data resources
+      // and sideloaded resources
       let entities = response.value;
 
       // If the response is a single entity, convert to array
