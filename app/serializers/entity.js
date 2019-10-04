@@ -71,7 +71,7 @@ export default DS.JSONAPISerializer.extend({
     // Initialize empty array instead of null value
     documentHash.data = [];
 
-    payload.forEach((response) => {
+    payloadsToParse.forEach((response) => {
       // Extract meta data, if available
       if (response["@iot.count"]) {
         documentHash.meta = {
@@ -85,7 +85,7 @@ export default DS.JSONAPISerializer.extend({
 
       // If the response is a single entity, convert to array
       if (typeOf(response.value) !== "array") {
-        entities = [response.value];
+        entities = [response];
       }
 
       entities.forEach((entity) => {
