@@ -57,34 +57,6 @@ export default DS.RESTAdapter.extend({
       }
     }
 
-    // SensorThings API Query Parameters
-    url = this.setUrlQueryParams(url, query);
-
-    return url;
-  },
-
-  // Convert Hash of query parameters into URL encoded parameters, add
-  // them to the URL, and return the new URL. DOES NOT check for 
-  // existing query parameters in the URL.
-  // (Shouldn't there be a function for this in Ember Data already?)
-  setUrlQueryParams(url, query) {
-    let q = [];
-    if (query && query['$orderby']) {
-      q.push('$orderby=' + query['$orderby']);
-    }
-
-    if (query && query['$filter']) {
-      q.push('$filter=' + query['$filter']);
-    }
-
-    if (query && query['$expand']) {
-      q.push('$expand=' + query['$expand']);
-    }
-
-    if (q.length > 0) {
-      url += '?' + q.join('&');
-    }
-
     return url;
   },
 
@@ -150,7 +122,6 @@ export default DS.RESTAdapter.extend({
     let query = relationship.options;
 
     url = this.urlPrefix(url, this.buildURL(type, id, snapshot, 'findHasMany'));
-    url = this.setUrlQueryParams(url, query);
 
     let options = {
       limit: relationship.options.limit
@@ -160,7 +131,7 @@ export default DS.RESTAdapter.extend({
       options.limit = 50;
     }
 
-    return this.getNextPage(url, options);
+    return this.getNextPage(url, options, options.limit);
   },
 
   /**
@@ -191,33 +162,24 @@ export default DS.RESTAdapter.extend({
     Return an *array* of SensorThings API responses, which requires a
     custom normalizer in the serializer.
 
-    If `options.limit` is specified, then the recursive GET will stop
-    when this limit is equaled or exceeded. If limit is 0 or undefined,
-    then no limit will be applied.
-
-    If `options.total` is specified, you may get weird results. It is 
-    meant for this function to keep track of how many results have been
-    retrieved during recursion.
-
     @method getNextPage
     @private
     @param {String} url
     @param {Object} options
+    @param {Integer} limit
+    @param {Integer} total
     @return {Promise} promise
   */
-  getNextPage(url, options) {
+  getNextPage(url, options, limit = 0, total = 0) {
     if (options === undefined) {
       options = {};
     }
-    if (options.total === undefined) {
-      options.total = 0;
-    }
 
-    return this.ajax(url, 'GET').then((data) => {
-      options.total = options.total + data.value.length;
+    return this.ajax(url, 'GET', { data: options }).then((data) => {
+      total = total + data.value.length;
 
-      if (data['@iot.nextLink'] && !this.atResultsLimit(options.total, options.limit)) {
-        return this.getNextPage(data['@iot.nextLink'], options).then((moreDataArray) => {
+      if (data['@iot.nextLink'] && !this.atResultsLimit(total, limit)) {
+        return this.getNextPage(data['@iot.nextLink'], {}, limit, total).then((moreDataArray) => {
           return [data].concat(moreDataArray);
         });
       } else {
