@@ -255,6 +255,6 @@ export default DS.RESTAdapter.extend({
       query = this.sortQueryParams(query);
     }
 
-    return this.getNextPage(url, query);
+    return this.getNextPage(url, query, query['$top']);
   },
 });
