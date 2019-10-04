@@ -7,7 +7,7 @@ export default DS.Model.extend({
   unitOfMeasurement: DS.attr(),
   observationType: DS.attr(),
 
-  observations: DS.hasMany('observation', { limit: 10 }),
+  observations: DS.hasMany('observation', { $top: 10 }),
   observedProperty: DS.belongsTo('observed-property'),
   thing: DS.belongsTo('thing'),
 
@@ -24,7 +24,7 @@ export default DS.Model.extend({
         id: this.get('id'),
         modelName: 'datastream'
       },
-      limit: 50,
+      $top: 50,
       $orderby: 'phenomenonTime desc',
       $filter: 'phenomenonTime ge ' + oneDayAgo.toISOString()
     });

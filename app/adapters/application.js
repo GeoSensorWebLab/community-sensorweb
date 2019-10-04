@@ -124,14 +124,14 @@ export default DS.RESTAdapter.extend({
     url = this.urlPrefix(url, this.buildURL(type, id, snapshot, 'findHasMany'));
 
     let options = {
-      limit: relationship.options.limit
+      $top: relationship.options['$top']
     };
 
-    if (options.limit === undefined) {
-      options.limit = 50;
+    if (options['$top'] === undefined) {
+      options['$top'] = 50;
     }
 
-    return this.getNextPage(url, options, options.limit);
+    return this.getNextPage(url, options, options['$top']);
   },
 
   /**
