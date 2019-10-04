@@ -8,16 +8,16 @@ Some notes about the partial implementation of an [Ember Data][] adapter that ca
 
 ## About Ember Data and OData-like APIs
 
-Ember Data appears to be really good at JSON-API, but I haven't used any JSON-APIs yet. Ember Data has adapters for JSON-API and REST, and REST can be extended to work with SensorThings API. The REST and JSON Serializers from Ember Data also can be extended to deserialize responses from STA as well.
+Ember Data has adapters for connecting to APIs that use JSON:API, generic JSON, and REST style. Each of these can be extended to work with SensorThings API; the choice boils down to which one you want to write a deserializer from SensorThings API to the schema that the Serializer class wants. I found it simpler to base the Serializer on JSON:API, as that schema has a very similar level of flexibility to SensorThings API.
 
-STA's [`$expand`][expand] function is very similiar to JSON-API's [compound documents][], and supporting that should be doable.
+For example, STA's [`$expand`][expand] function is very similiar to JSON:API's [compound documents][], so the Serializer needs to move embedded entities into the `included` array.
 
 [compound documents]: http://jsonapi.org/format/#document-compound-documents
 [expand]: http://docs.opengeospatial.org/is/15-078r6/15-078r6.html#47
 
 ## About Server-side Pagination
 
-From what I can tell, server-side pagination is not automatically handled in Ember Data. Instead the developer must use any pagination links in the server response `links` object to request more data, typically in an Ember Controller or Component. I ran into an issue where a `Thing` has more than 20 `Datastreams`, and the SensorThings API implementation I am using only shows 20 per page. So a station will not display it's air temperature if the first 20 `Datastreams` don't include the one for air temperature.
+From what I can tell, server-side pagination is not automatically handled in Ember Data. Instead the developer must use any pagination links in the server response `links` object to request more data, typically in an Ember Controller or Component. I ran into an issue where a `Thing` has more than 20 `Datastreams`, and the SensorThings API implementation I am using only shows 20 per page<sup>1</sup>. So a station will not display it's air temperature if the first 20 `Datastreams` don't include the one for air temperature.
 
 To solve this I added some overrides to the Ember Adapter that automatically retrieve additional pages from SensorThings API, unless a limit is specified. (This limit option is separate from the SensorThings API `$top` operator.) So when a developer asks an Ember Store for **ALL** the records, then that is what you will get.
 
@@ -34,7 +34,7 @@ A safer alternative is to use `query`.
 ```javascript
 // In a route
 this.get('store').query('observed-property', {
-	limit: 50
+	$top: 50
 });
 ```
 
@@ -42,28 +42,34 @@ This will attempt to retrieve *at least* 50 Observed Properties from the server.
 
 If the server pagination default is 20, for example, then 60 entities will be returned to Ember even though only 50 were specified. I *may* change this behaviour in the future to set a hard limit by integrating `$top`.
 
-### JSON-API
-
-I see that JSON API supports pagination links, and I tried setting those properties in the Ember Serializer, but they don't seem to be used at all yet. Maybe in the future that could be a cleaner option.
+**\[1\]** Note: this no longer applies in 2019 as I switched implementations for STA. Using `$top` to limit a query still works.
 
 ## SensorThings API Query Functions
 
-Currently supported: `$orderby`, `$filter`.
+Currently supported:
+
+* `$count`
+* `$expand`
+* `$filter`
+* `$orderby`
+* `$skip`
+* `$top`
+
 
 ```javascript
 // In a route, or model
 let oneDayAgo = new Date(new Date() - 86400 * 1000);
 this.get('store').query('observation', {
-	limit: 50,
-	'$orderby': 'phenomenonTime desc',
-	'$filter': 'phenomenonTime ge ' + oneDayAgo.toISOString()
+	$top: 50,
+	$orderby: 'phenomenonTime desc',
+	$filter: 'phenomenonTime ge ' + oneDayAgo.toISOString()
 });
 ```
 
 This will make a request on the SensorThings URL:
 
 ```
-http://sensorthings.example.com/v1.0/Observations?$orderby=phenomenonTime%20desc&$filter=phenomenonTime%20ge%202018-06-14T20:31:11.919Z
+http://sensorthings.example.com/v1.0/Observations?$orderby=phenomenonTime%20desc&$filter=phenomenonTime%20ge%202018-06-14T20:31:11.919Z&$top=50
 ```
 
 ### Entity Relationship Collections
@@ -76,7 +82,7 @@ this.get('store').query('observation', {
         id: datastream.get('id'),
         modelName: 'datastream'
       },
-      limit: 50,
+      $top: 50,
       $orderby: 'phenomenonTime desc'
     });
 ```
@@ -84,7 +90,7 @@ this.get('store').query('observation', {
 This will make a request on the SensorThings URL:
 
 ```
-http://sensorthings.example.com/v1.0/Datastreams(id)/Observations?$orderby=phenomenonTime%20desc
+http://sensorthings.example.com/v1.0/Datastreams(id)/Observations?$orderby=phenomenonTime%20desc&$top=50
 ```
 
 The "parent" entity must be passed in as a property because the Ember Data Store must be told what type of model is being deserialized *first* (in this example, `observation`). If `parent` is omitted, then a simple query will be performed.
