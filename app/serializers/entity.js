@@ -61,37 +61,34 @@ export default DS.JSONAPISerializer.extend({
       included: []
     };
 
+    let payloadsToParse = payload;
+
     // If payload is an array, parse each set of responses one at a time
     if (typeOf(payload) !== "array") {
-      let { data, included } = this.normalizeEntity(store, primaryModelClass, payload);
-
-      documentHash.data = data;
-      documentHash.included.push(...included);
-    } else {
-      // Initialize empty array instead of null value
-      documentHash.data = [];
-
-      payload.forEach((response) => {
-        // TODO: Extract meta information such as the collection size
-        // from the STA response
-
-        // If the response is a single entity
-        if (typeOf(response.value) !== "array") {
-
-        } else {
-          // If the response is a collection of entities
-          let entities = response.value;
-
-          entities.forEach((entity) => {
-            // Convert entity for JSON:API `data` array            
-            let { data, included } = this.normalizeEntity(store, primaryModelClass, entity);
-
-            documentHash.data.push(...data);
-            documentHash.included.push(...included);
-          });
-        }
-      });
+      payloadsToParse = [payload];
     }
+
+    // Initialize empty array instead of null value
+    documentHash.data = [];
+
+    payload.forEach((response) => {
+      // TODO: Extract meta information such as the collection size
+      // from the STA response
+      let entities = response.value;
+
+      // If the response is a single entity, convert to array
+      if (typeOf(response.value) !== "array") {
+        entities = [response.value];
+      }
+
+      entities.forEach((entity) => {
+        // Convert entity for JSON:API `data` array            
+        let { data, included } = this.normalizeEntity(store, primaryModelClass, entity);
+
+        documentHash.data.push(...data);
+        documentHash.included.push(...included);
+      });
+    });
 
     return documentHash;
   },
@@ -163,22 +160,18 @@ export default DS.JSONAPISerializer.extend({
         let relationshipData;
 
         if (typeOf(value) !== "array") {
+          value = [value];
+        }
+
+        value.forEach((relatedEntity) => {
+          let relatedEntityClass = store.modelFor(relationship.type);
           let { data, included } = this.normalizeEntity(store, relatedEntityClass, relatedEntity);
+
           documentHash.included.push(...data);
           documentHash.included.push(...included);
 
           relationshipData = this.extractRelationshipData(data);
-        } else {
-          value.forEach((relatedEntity) => {
-            let relatedEntityClass = store.modelFor(relationship.type);
-            let { data, included } = this.normalizeEntity(store, relatedEntityClass, relatedEntity);
-
-            documentHash.included.push(...data);
-            documentHash.included.push(...included);
-
-            relationshipData = this.extractRelationshipData(data);
-          });
-        }
+        });
 
         // Add a JSON:API relationship data object
         dataEntity.relationships[relationship.key] = {
