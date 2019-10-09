@@ -121,17 +121,11 @@ export default DS.RESTAdapter.extend({
     let type = snapshot.modelName;
     let query = relationship.options;
 
-    url = this.urlPrefix(url, this.buildURL(type, id, snapshot, 'findHasMany'));
+    url = this.urlPrefix(url, this.buildURL(type, id, snapshot, 'findHasMany', query));
 
-    let options = {
-      $top: relationship.options['$top']
-    };
+    let options = relationship.options;
 
-    if (options['$top'] === undefined) {
-      options['$top'] = 50;
-    }
-
-    return this.getNextPage(url, options, options['$top']);
+    return this.getNextPage(url, query, query['$top']);
   },
 
   /**
