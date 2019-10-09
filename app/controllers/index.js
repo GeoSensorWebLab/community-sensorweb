@@ -17,7 +17,7 @@ export default Controller.extend({
 
       this.set('activeStation', stn);
       this.set('activeDatastream', stn.get('airTemperature'));
-      this.set('temperatureDatastream', stn.get('datastreams.firstObject'));
+      this.set('temperatureDatastream', stn.get('airTemperature'));
       this.set('forecastLinkForStation', "https://spotwx.com/products/grib_index.php?model=gem_reg_10km&lat="+ lat + "&lon=" + lng);
     }
   }

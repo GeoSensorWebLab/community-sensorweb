@@ -61,7 +61,9 @@ export default DS.Model.extend({
   description: DS.attr(),
   properties: DS.attr(),
 
-  datastreams: DS.hasMany('datastream', { limit: 100 }),
+  datastreams: DS.hasMany('datastream', {
+    $expand: 'ObservedProperty'
+  }),
   locations: DS.hasMany('location', { limit: 5 }),
 
   // Retrieve all the observed properties to find the best one to match
@@ -109,7 +111,16 @@ export default DS.Model.extend({
   }),
 
   airTemperature: computed('datastreams.[]', function() {
-    return this.bestMatchByObservedProperty('airTemperature');
+    let p = new Promise((resolve, reject) => {
+      this.get('datastreams').then((datastreams) => {
+        let ds = datastreams.find((datastream) => {
+          return (datastream.get('observedProperty.name') === "Air Temperature");
+        });
+        resolve(ds);
+      });
+    });
+
+    return DS.PromiseObject.create({ promise: p });
   }),
 
   lastLocation: computed('locations', function() {
