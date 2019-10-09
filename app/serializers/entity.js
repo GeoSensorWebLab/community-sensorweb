@@ -83,18 +83,22 @@ export default DS.JSONAPISerializer.extend({
       // and sideloaded resources
       let entities = response.value;
 
-      // If the response is a single entity, convert to array
+      // If the response is a single entity, then documentHash.data must
+      // be a single object
       if (typeOf(response.value) !== "array") {
-        entities = [response];
-      }
+        let { data, included } = this.normalizeEntity(store, primaryModelClass, response.value);
 
-      entities.forEach((entity) => {
-        // Convert entity for JSON:API `data` array            
-        let { data, included } = this.normalizeEntity(store, primaryModelClass, entity);
-
-        documentHash.data.push(...data);
+        documentHash.data = data;
         documentHash.included.push(...included);
-      });
+      } else {
+        entities.forEach((entity) => {
+          // Convert entity for JSON:API `data` array            
+          let { data, included } = this.normalizeEntity(store, primaryModelClass, entity);
+
+          documentHash.data.push(...data);
+          documentHash.included.push(...included);
+        });
+      }
     });
 
     return documentHash;
@@ -163,22 +167,30 @@ export default DS.JSONAPISerializer.extend({
       let value = dataEntity.attributes[staRelationshipName];
 
       if (value !== undefined) {
-        // Collect entity or entities for relationship data
+        // Collect entity or entities for relationship data.
+        // For a single entity, relationshipData should be an object;
+        // otherwise, an array.
         let relationshipData;
 
         if (typeOf(value) !== "array") {
-          value = [value];
-        }
-
-        value.forEach((relatedEntity) => {
           let relatedEntityClass = store.modelFor(relationship.type);
-          let { data, included } = this.normalizeEntity(store, relatedEntityClass, relatedEntity);
+          let { data, included } = this.normalizeEntity(store, relatedEntityClass, value);
 
           documentHash.included.push(...data);
           documentHash.included.push(...included);
 
-          relationshipData = this.extractRelationshipData(data);
-        });
+          relationshipData = this.extractRelationshipData(data)[0];
+        } else {
+          value.forEach((relatedEntity) => {
+            let relatedEntityClass = store.modelFor(relationship.type);
+            let { data, included } = this.normalizeEntity(store, relatedEntityClass, relatedEntity);
+
+            documentHash.included.push(...data);
+            documentHash.included.push(...included);
+
+            relationshipData = this.extractRelationshipData(data);
+          });
+        }
 
         // Add a JSON:API relationship data object
         dataEntity.relationships[relationship.key] = {
