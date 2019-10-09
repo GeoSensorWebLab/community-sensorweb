@@ -247,6 +247,9 @@ export default DS.RESTAdapter.extend({
     if (query && query.parent) {
       query.relationship = type.modelName;
       url = this.buildURL(query.parent.modelName, query.parent.id, null, 'query', query);
+      // Remove Ember Data objects from query params
+      delete query.relationship;
+      delete query.parent;
     } else {
       url = this.buildURL(type.modelName, query.id, null, 'query', query);
     }
