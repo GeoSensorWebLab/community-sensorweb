@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { computed } from '@ember/object';
 
 /*
  * Panel to display a live result view
@@ -10,12 +11,7 @@ export default Component.extend({
   activeDatastream: null,
   datastream: null,
 
-  didReceiveAttrs() {
-    this._super(...arguments);
-    if (this.get('activeDatastream') === this.get('datastream')) {
-      this.set('isActivePanel', true);
-    } else {
-      this.set('isActivePanel', false);
-    }
-  }
+  isActivePanel: computed('datastream', 'activeDatastream', function () {
+    return (this.get('activeDatastream') === this.get('datastream'));
+  })
 });
