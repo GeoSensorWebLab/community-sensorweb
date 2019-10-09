@@ -23,7 +23,7 @@ const mapping = [
 export function formatWindDirection([value, units]) {
   if (units === undefined || value === undefined) {
     return '';
-  } else if (units === '°') {
+  } else if (units === '°' || units === 'degree') {
     for(let i = 0; i < mapping.length; i++) {
       let map = mapping[i];
       if (value < map[0]) {
