@@ -140,8 +140,13 @@ main {
 }
 
 .panel h2 {
-  font-size: 2em;
   padding: 0 1em;
+  font-size: 2em;
+}
+
+.panel h3 {
+  padding: 0 2em;
+  font-size: 1em;
 }
 
 #live-view > .panel {

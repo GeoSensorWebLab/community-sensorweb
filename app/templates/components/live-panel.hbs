@@ -1,5 +1,6 @@
 {{#unless datastream}}
 <h2>Loading&hellip;</h2>
 {{else}}
+<h3>{{datastream.observedProperty.name}}</h3>
 <h2>{{datastream.lastObservation.result}} {{datastream.unitOfMeasurement.name}}</h2>
 {{/unless}}
