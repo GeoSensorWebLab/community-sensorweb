@@ -1,6 +1,8 @@
-{{#unless datastream}}
+{{#if isLoading}}
 <h2>Loading&hellip;</h2>
+{{else if isUnavailable}}
+<h2><em>No Data Available</em></h2>
 {{else}}
 <h3>{{datastream.observedProperty.name}}</h3>
 <h2>{{datastream.lastObservation.result}} {{datastream.unitOfMeasurement.name}}</h2>
-{{/unless}}
+{{/if}}

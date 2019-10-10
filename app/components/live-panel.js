@@ -11,6 +11,22 @@ export default Component.extend({
   activeDatastream: null,
   datastream: null,
 
+  isLoading: true,
+  isUnavailable: true,
+
+  didReceiveAttrs() {
+    this._super(...arguments);
+
+    // As the datastream is loaded asynchronously through a Promise,
+    // we have to use a `then` here to wait to update the local status.
+    // When these component properties are updated, then the component
+    // will automatically re-render.
+    this.get('datastream').then((datastream) => {
+      this.set('isLoading', false);
+      this.set('isUnavailable', (datastream === undefined));
+    })
+  },
+
   isActivePanel: computed('datastream', 'activeDatastream', function () {
     return (this.get('activeDatastream') === this.get('datastream'));
   })
