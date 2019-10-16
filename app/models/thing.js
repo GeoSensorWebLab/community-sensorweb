@@ -68,6 +68,14 @@ export default DS.Model.extend({
     });
   }),
 
+  timeOfLastUpdate: computed('latestObservation', function() {
+    return DS.PromiseObject.create({
+      promise: this.get('latestObservation').then((observation) => {
+        return observation.get('phenomenonTime');
+      })
+    });
+  }),
+
   /*
     Shortcut property for the primary datastreams
   */
