@@ -1,5 +1,9 @@
 import Component from '@ember/component';
 import Highcharts from 'highcharts';
+import NoDataToDisplay from 'no-data-to-display';
+
+// Enable "No Data" module for Highcharts
+NoDataToDisplay(Highcharts);
 
 export default Component.extend({
   datastream: null,
@@ -19,11 +23,16 @@ export default Component.extend({
     them as a series.
   */
   resetChart() {
+
     if (this.get('chart')) {
       this.get('chart').destroy();
     }
 
     let chart = Highcharts.chart('chart', {
+      lang: {
+        noData: "No data for past 24 hours"
+      },
+
       rangeSelector: {
         enabled: false
       },
@@ -51,10 +60,6 @@ export default Component.extend({
       chart.setTitle({ text: datastream.get('name') });
       chart.showLoading();
 
-      chart.yAxis[0].setTitle({
-        text: `${propertyName} (${unit})`
-      });
-
       datastream.recentObservations().then((observations) => {
         // Convert Observations to data points
         let seriesData = observations.map((observation) => {
@@ -68,13 +73,22 @@ export default Component.extend({
           return x[0] - y[0];
         });
 
-        chart.addSeries({
-          name: propertyName,
-          data: seriesData,
-          tooltip: {
-            valueSuffix: unit
-          }
-        });
+        // Only update the chart if data is available
+        if (seriesData.length > 0) {
+          // Add property and units to y axis label
+          chart.yAxis[0].setTitle({
+            text: `${propertyName} (${unit})`
+          });
+
+          chart.addSeries({
+            name: propertyName,
+            data: seriesData,
+            tooltip: {
+              valueSuffix: unit
+            }
+          }); 
+        }
+        
       });
     });
   },

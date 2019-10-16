@@ -33,6 +33,11 @@ module.exports = function(defaults) {
       { transformation: 'cjs', as: 'highcharts' }
     ]
   });
+  app.import('node_modules/highcharts/modules/no-data-to-display.js', {
+    using: [
+      { transformation: 'cjs', as: 'no-data-to-display' }
+    ]
+  });
   app.import('node_modules/highcharts/highstock.src.js', {
     using: [
       { transformation: 'cjs', as: 'highcharts/highstock' }
