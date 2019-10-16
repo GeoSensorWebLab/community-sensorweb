@@ -36,13 +36,22 @@ export default DS.Model.extend({
     Sort Observations in ascending phenomenonTime order
   */
   sortedObservations: computed('observations.[]', function() {
-    let observations = this.get('observations');
-    return observations.toArray().sort((x, y) => {
-      return new Date(x.get('phenomenonTime')) - new Date(y.get('phenomenonTime'));
+    return this.get('observations').then((observations) => {
+      return observations.sortBy('phenomenonTime');
     });
-  }).readOnly(),
+  }),
 
+  // Select the newest Observation in this Datastream, and return a
+  // PromiseObject.
   lastObservation: computed('sortedObservations', function() {
-    return this.get('sortedObservations.lastObject');
-  }).readOnly()
+    let p = new Promise((resolve, reject) => {
+      this.get('sortedObservations').then((observations) => {
+        resolve(observations.get('lastObject'));
+      });
+    });
+
+    return DS.PromiseObject.create({
+      promise: p
+    });
+  })
 });

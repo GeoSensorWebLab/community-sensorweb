@@ -48,7 +48,7 @@
     {{else}}
 
     <div class="update-time">
-      <h3>Last Update:<br>{{activeStation.lastUpdate.phenomenonTime}}</h3>
+      <h3>Last Update:<br>{{activeStation.latestObservation.phenomenonTime}}</h3>
     </div>
 
     {{live-panel name="air-temperature" datastream=activeStation.airTemperature activeDatastream=activeDatastream}}

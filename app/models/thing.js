@@ -21,7 +21,7 @@ export default DS.Model.extend({
         });
 
         resolve(ds);
-      });
+      }, (err) => { reject(err); });
     });
 
     return DS.PromiseObject.create({ promise: p });
@@ -32,39 +32,60 @@ export default DS.Model.extend({
   }),
 
   /*
-    Of the primary datastreams, find the latest observation.
-
-    Will update when any primary datastream updates its observations.
+    Retrieve all the cached Datastreams, then the latest Observation for
+    each Datastream. Return the most recent Observation phenomenonTime.
   */
-  lastUpdate: computed('primaryDatastreams.@each.observations', function() {
-    // let p = new Promise((resolve, reject) => {
-    //   Promise.all(this.get('primaryDatastreams')).then((datastreams) => {
-    //     Promise.all(datastreams.map((datastream) => {
-    //       if (datastream) {
-    //         return datastream.get('lastObservation');
-    //       }
-    //     })).then(lastObservations => {
-    //       if (lastObservations === undefined || lastObservations.length === 0) {
-    //         reject();
-    //       } else {
-    //         let sorted = lastObservations.sort((x, y) => {
-    //           return new Date(x.get('phenomenonTime')) - new Date(y.get('phenomenonTime'));
-    //         });
+  latestObservation: computed('primaryDatastreams', function() {
+    let p = new Promise((resolve, reject) => {
+      this.get('primaryDatastreams').then((datastreams) => {
+        // As the Datastreams may not be ready yet, we have to use
+        // Promise.all to resolve them before continuing.
+        Promise.all(datastreams.map((datastream) => {
+          // Ignore unavailable Datastreams
+          if (datastream) {
+            return datastream.get('lastObservation');
+          }
+        })).then(lastObservations => {
+          if (lastObservations === undefined || lastObservations.length === 0) {
+            reject();
+          } else {
+            let sorted = lastObservations.filter((obs) => {
+              return obs !== undefined;
+            }).sort((x, y) => {
+              return new Date(x.get('phenomenonTime')) - new Date(y.get('phenomenonTime'));
+            });
 
-    //         resolve(sorted[sorted.length - 1]);
-    //       }
-    //     });
-    //   });
-    // });
+            if (sorted.length > 0) {
+              resolve(sorted[sorted.length - 1]);
+            }
+          }
+        }, (err) => { reject(err); });
+      }, (err) => { reject(err); });
+    });
     
-    // return DS.PromiseObject.create({
-    //   promise: p
-    // });
+    return DS.PromiseObject.create({
+      promise: p
+    });
   }),
 
   /*
     Shortcut property for the primary datastreams
   */
+ 
+  primaryDatastreams: computed('datastreams.[]', function() {
+    let p = Promise.all([
+      this.get('airPressure'),
+      this.get('airTemperature'),
+      this.get('relativeHumidity'),
+      this.get('visibility'),
+      this.get('windDirection'),
+      this.get('windSpeed'),
+    ]);
+
+    return DS.PromiseObject.create({
+      promise: p
+    });
+  }),
  
   airPressure: computed('datastreams.[]', function() {
     return this.getDatastreamByProperty('Station Pressure');
