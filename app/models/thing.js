@@ -1,5 +1,9 @@
 import DS from 'ember-data';
 import { computed } from '@ember/object';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
+TimeAgo.addLocale(en);
 
 export default DS.Model.extend({
   name: DS.attr(),
@@ -72,6 +76,17 @@ export default DS.Model.extend({
     return DS.PromiseObject.create({
       promise: this.get('latestObservation').then((observation) => {
         return observation.get('phenomenonTime');
+      })
+    });
+  }),
+
+  timeSinceLastUpdate: computed('timeOfLastUpdate', function() {
+    return DS.PromiseObject.create({
+      promise: this.get('timeOfLastUpdate').then((time) => {
+        const timeAgo = new TimeAgo('en-CA');
+        let date = new Date(time);
+        console.log(time, date);
+        return timeAgo.format(date);
       })
     });
   }),
