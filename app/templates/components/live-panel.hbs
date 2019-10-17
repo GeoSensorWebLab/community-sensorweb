@@ -1,4 +1,4 @@
-{{#if isLoading}}
+{{#if (is-pending datastream)}}
 <h2>Loading&hellip;</h2>
 {{else if isUnavailable}}
 <h2><em>No Data Available</em></h2>

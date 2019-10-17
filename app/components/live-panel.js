@@ -11,7 +11,6 @@ export default Component.extend({
   activeDatastream: null,
   datastream: null,
 
-  isLoading: true,
   isUnavailable: true,
 
   didReceiveAttrs() {
@@ -22,7 +21,6 @@ export default Component.extend({
     // When these component properties are updated, then the component
     // will automatically re-render.
     this.get('datastream').then((datastream) => {
-      this.set('isLoading', false);
       this.set('isUnavailable', (datastream === undefined));
     })
   },
