@@ -85,7 +85,6 @@ export default DS.Model.extend({
       promise: this.get('timeOfLastUpdate').then((time) => {
         const timeAgo = new TimeAgo('en-CA');
         let date = new Date(time);
-        console.log(time, date);
         return timeAgo.format(date);
       })
     });
