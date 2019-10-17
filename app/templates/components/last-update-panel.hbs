@@ -1,0 +1,8 @@
+<div class="update-time">
+  <h3>Last Update</h3>
+  {{#if displayDateOffset}}
+  <h2 {{action 'switchDate'}}>{{await station.timeSinceLastUpdate}}</h2>
+  {{else}}
+  <h2 {{action 'switchDate'}}>{{await station.timeOfLastUpdate}}</h2>
+  {{/if}}
+</div>
