@@ -166,6 +166,10 @@ main {
   text-align: center;
 }
 
+.update-time h2 {
+  cursor: pointer;
+}
+
 /* Compass directions */
 .dir0 {
   transform: rotate(180deg);
