@@ -2,6 +2,8 @@ import Component from '@ember/component';
 import Highcharts from 'highcharts';
 import NoDataToDisplay from 'no-data-to-display';
 
+import { debounce } from '@ember/runloop';
+
 // Enable "No Data" module for Highcharts
 NoDataToDisplay(Highcharts);
 
@@ -11,10 +13,31 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
     this.resetChart();
+
+    /*
+      When the window is resized, the chart (when it has been rendered)
+      must be resized to fit its container. We use a debounce to 
+      prevent too many resize calls as the window is resized.
+     */
+    $(window).on('resize', () => {
+      debounce(this, this.resizeChartToContainer, 150);
+    });
   },
 
   didUpdateAttrs() {
     this.resetChart();
+  },
+
+  /*
+    Set the chart width and height to that of its parent container.
+    Highcharts will automatically animate the resize transition.
+   */
+  resizeChartToContainer() {
+    let chart = this.get('chart');
+    if (chart) {
+      let $parent = this.$().parent();
+      chart.setSize($parent.width(), $parent.height());
+    }
   },
 
   /*
@@ -49,6 +72,8 @@ export default Component.extend({
       }
     });
 
+    window.chart = chart;
+
     this.set('chart', chart);
     this.get('datastream').then((datastream) => {
 
@@ -61,6 +86,7 @@ export default Component.extend({
       chart.showLoading();
 
       datastream.recentObservations().then((observations) => {
+        chart.hideLoading();
         // Convert Observations to data points
         let seriesData = observations.map((observation) => {
           let timestamp = new Date(observation.get('phenomenonTime'));

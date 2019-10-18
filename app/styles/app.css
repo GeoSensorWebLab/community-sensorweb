@@ -92,6 +92,7 @@ main {
 
   display: flex;
   place-items: center;
+  overflow: hidden;
 
   background-color: #535;
   color: #FFF;
