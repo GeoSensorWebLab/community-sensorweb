@@ -33,6 +33,11 @@ module.exports = function(defaults) {
       { transformation: 'cjs', as: 'highcharts' }
     ]
   });
+  app.import('node_modules/highcharts/modules/accessibility.js', {
+    using: [
+      { transformation: 'cjs', as: 'highcharts-accessibility' }
+    ]
+  });
   app.import('node_modules/highcharts/modules/no-data-to-display.js', {
     using: [
       { transformation: 'cjs', as: 'no-data-to-display' }
