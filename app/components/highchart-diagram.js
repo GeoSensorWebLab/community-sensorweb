@@ -19,7 +19,7 @@ export default Component.extend({
       must be resized to fit its container. We use a debounce to 
       prevent too many resize calls as the window is resized.
      */
-    $(window).on('resize', () => {
+    this.$(window).on('resize', () => {
       debounce(this, this.resizeChartToContainer, 150);
     });
   },
