@@ -1,7 +1,5 @@
-{{#let (hash
+{{#with (hash
 	layer=(component "openlayers-map/layer" parentComponent=this)
-	) as |components|}}
-
+) as |components|}}
 	{{yield components}}
-
-{{/let}}
+{{/with}}
