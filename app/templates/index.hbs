@@ -1,19 +1,7 @@
 <div id="container">
-  {{#leaflet-map id="map-view" lat=lat lng=lng zoom=zoom as |layers|}}
-    {{layers.tile url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" attribution=attribution}}
-
-    {{#each model as |thing|}}
-      {{#if thing.lastLocation.location}}
-      {{#layers.geoJSON geoJSON=thing.lastLocation.location onClick=(action "selectStation" thing) as |marker|}}
-        {{#marker.popup}}
-          {{thing.name}}
-        {{/marker.popup}}
-      {{/layers.geoJSON}}
-      {{/if}}
-
-    {{/each}}
-
-  {{/leaflet-map}}
+  {{#openlayers-map id="map-view" lat=lat lng=lng zoom=zoom as |map|}}
+    {{map.layer label="Open Street Map" url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" attribution=attribution}}
+  {{/openlayers-map}}
 
   <div id="chart-view">
     {{#unless activeStation}}

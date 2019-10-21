@@ -49,5 +49,7 @@ module.exports = function(defaults) {
     ]
   });
 
+  app.import('node_modules/ol/ol.css');
+
   return app.toTree();
 };

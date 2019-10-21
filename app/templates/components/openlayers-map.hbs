@@ -1,0 +1,7 @@
+{{#let (hash
+	layer=(component "openlayers-map/layer" parentComponent=this)
+	) as |components|}}
+
+	{{yield components}}
+
+{{/let}}
