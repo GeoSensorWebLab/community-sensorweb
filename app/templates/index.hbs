@@ -1,6 +1,6 @@
 <div id="container">
   {{#openlayers-map id="map-view" lat=lat lon=lon zoom=zoom as |map|}}
-    {{map.layer 
+    {{map.tile-layer 
         label="Open Street Map"
         url="https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
         attribution=attribution
