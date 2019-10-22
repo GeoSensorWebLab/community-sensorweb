@@ -1,9 +1,14 @@
 <div id="container">
-  {{#openlayers-map id="map-view" lat=lat lon=lon zoom=zoom as |map|}}
+  {{#openlayers-map id="map-view"
+                    lat=lat
+                    lon=lon
+                    zoom=zoom
+                    projection="EPSG:3573"
+  as |map|}}
     {{map.tile-layer 
-        label="Open Street Map"
-        url="https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
-        attribution=attribution
+        projection="EPSG:3573"
+        url="https://tiles.arcticconnect.ca/awm/{z}/{x}/{y}.png"
+        attribution='Map © <a href="http://arcticconnect.ca/">ArcticConnect</a>. Data © <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }}
   {{/openlayers-map}}
 

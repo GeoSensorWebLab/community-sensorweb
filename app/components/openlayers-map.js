@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import Map from 'ol/Map';
 import View from 'ol/View';
-import { fromLonLat } from 'ol/proj';
+import { transform } from 'ol/proj';
 
 /*
  * Component for an interactive web map
@@ -13,6 +13,7 @@ export default Component.extend({
   zoom: null,
 
   map: null,
+  projection: 'EPSG:3857',
   
   init() {
     this._super(...arguments);
@@ -24,11 +25,14 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
+    let projection = this.get('projection');
+
     let map = new Map({
       target: this.element.id,
       layers: [],
       view: new View({
-        center: fromLonLat([this.get('lon'), this.get('lat')]),
+        center: transform([this.get('lon'), this.get('lat')], 'EPSG:4326', projection),
+        projection: projection,
         zoom: this.get('zoom')
       })
     });
