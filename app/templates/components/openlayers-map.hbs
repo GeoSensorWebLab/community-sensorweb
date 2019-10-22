@@ -1,5 +1,6 @@
 {{#with (hash
 	tile-layer=(component "openlayers-map/tile-layer" parentComponent=this)
+	wmts-tile-layer=(component "openlayers-map/wmts-tile-layer" parentComponent=this)
 ) as |components|}}
 	{{yield components}}
 {{/with}}
