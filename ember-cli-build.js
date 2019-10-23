@@ -44,6 +44,12 @@ module.exports = function(defaults) {
     ]
   });
 
+  app.import('node_modules/proj4/dist/proj4.js', {
+    using: [
+      { transformation: 'cjs', as: 'proj4' }
+    ]
+  });
+
   app.import('node_modules/ol/ol.css');
 
   return app.toTree();
