@@ -22,7 +22,7 @@ export default Component.extend({
       let pointStyle = new Style({
         image: new CircleStyle({
           radius: 5,
-          fill: null,
+          fill: new Fill({ color: 'white' }),
           stroke: new Stroke({ color: 'blue', width: 1 })
         })
       });
