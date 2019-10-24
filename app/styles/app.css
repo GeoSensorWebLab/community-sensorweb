@@ -76,8 +76,33 @@ main {
   color: #FFF;
 }
 
-#map-view.leaflet-container {
+#map-popup {
+  padding: 1em;
+
+  background-color: #FFF;
   color: #000;
+
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+#map-popup .title {
+  padding: 0;
+  margin: 0;
+}
+
+.popup-arrow {
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 8px;
+  height: 8px;
+
+  background-color: #FFF;
+  margin-left: -4px;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+  transform: rotate(45deg);
 }
 
 .svg-icon-svg {

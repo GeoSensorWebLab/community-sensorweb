@@ -5,15 +5,24 @@
                     zoom=zoom
                     projection="EPSG:3573"
   as |map|}}
+    <div id="map-popup">
+      <div class="popup-arrow"></div>
+      <h4 class="title"></h4>
+    </div>
+
     {{#map.vector-layer as |layer|}}
       {{#each model as |thing|}}
         {{#if thing.lastLocation.location}}
-          {{layer.feature geoJSON=thing.lastLocation.location}}
+          {{layer.feature 
+              geoJSON=thing.lastLocation.location
+              title=thing.name
+              onClick=(action "selectStation" thing)
+          }}
         {{/if}}
       {{/each}}
     {{/map.vector-layer}}
 
-    {{map.tile-layer 
+    {{map.tile-layer
         projection="EPSG:3573"
         url="https://tiles.arcticconnect.ca/awm/{z}/{x}/{y}.png"
         attribution='Map © <a href="http://arcticconnect.ca/">ArcticConnect</a>. Data © <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
