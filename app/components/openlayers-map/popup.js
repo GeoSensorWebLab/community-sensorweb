@@ -24,10 +24,14 @@ export default Component.extend({
     this._super(...arguments);
     this.get('parentComponent').on('ready', (map) => {
       let popup = new Overlay({
+        autoPan: true,
+        autoPanAnimation: {
+          duration: 250
+        },
         element: this.$()[0],
+        offset: [0, -10],
         positioning: 'bottom-center',
-        stopEvent: true,
-        offset: [0, -10]
+        stopEvent: true
       });
       map.addOverlay(popup);
 
