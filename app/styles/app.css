@@ -78,6 +78,7 @@ main {
 
 .map-popup {
   padding: 1em;
+  z-index: 1000;
 
   background-color: #FFF;
   color: #000;
@@ -89,6 +90,10 @@ main {
 .map-popup .title {
   padding: 0;
   margin: 0;
+}
+
+.map-popup ul {
+  padding-left: 1em;
 }
 
 .popup-arrow {

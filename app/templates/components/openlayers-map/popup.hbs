@@ -1,2 +1,11 @@
 <div class="popup-arrow"></div>
-<h4 class="title">{{title}}</h4>
+{{#if multipleFeatures}}
+	<h4 class="title">Select a Station</h4>
+	<ul>
+	{{#each features as |feature|}}
+		<li><a {{action feature.onClick}} href="#">{{feature.title}}</a></li>
+	{{/each}}
+	</ul>
+{{else}}
+	<h4 class="title">{{features.0.title}}</h4>
+{{/if}}
