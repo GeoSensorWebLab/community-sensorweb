@@ -112,6 +112,10 @@ main {
   transform: rotate(45deg);
 }
 
+.popup-zoom {
+  margin: 0;
+}
+
 .popup-close {
   position: absolute;
   right: 5px;

@@ -1,5 +1,8 @@
 import Component from '@ember/component';
+import Extent from 'ol/Extent';
 import Overlay from 'ol/Overlay';
+import View from 'ol/View';
+import {easeOut} from 'ol/easing';
 /*
  * Sub-component for a popup.
  */
@@ -39,6 +42,20 @@ export default Component.extend({
         let featureObjects = features.map(feature => feature.getProperties());
 
         if (features.length > 0) {
+          // Create a bounding box for the features to be used in the 
+          // "zoom" feature
+          let allCoordinates = features.map(feature => feature.getGeometry().getCoordinates());
+          let allExtent = Extent.boundingExtent(allCoordinates);
+          this.set('onZoom', () => {
+            let view = map.getView();
+            view.fit(allExtent, {
+              duration: 800,
+              easing: easeOut,
+              maxZoom: 14,
+              padding: [50, 50, 50, 50]
+            });
+          });
+
           this.set('features', featureObjects);
           this.set('multipleFeatures', (features.length > 1));
           this.$().show();
@@ -68,6 +85,11 @@ export default Component.extend({
   actions: {
     closePopup() {
       this.$().hide();
+    },
+
+    zoomCloser() {
+      this.$().hide();
+      this.get('onZoom')();
     }
   }
 });
