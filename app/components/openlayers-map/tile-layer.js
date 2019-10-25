@@ -16,6 +16,8 @@ export default Component.extend({
   // Bounding extent for the layer, which will not be rendered outside
   // this extent. Use `ol/extent` object.
   extent: null,
+  // Maximum zoom level supported by the tile server.
+  maxZoom: 19,
   opacity: 1.0,
   // Projection of the tiles, defaults to Web Mercator (EPSG:3857).
   projection: 'EPSG:3857',
@@ -32,6 +34,7 @@ export default Component.extend({
         opacity: this.get('opacity'),
         source: new XYZ({
           attributions: this.get('attribution'),
+          maxZoom: this.get('maxZoom'),
           projection: this.get('projection'),
           url: this.get('url')
         }),

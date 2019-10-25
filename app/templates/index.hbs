@@ -3,6 +3,7 @@
                     lat=lat
                     lon=lon
                     zoom=zoom
+                    maxZoom=19
                     projection="EPSG:3573"
   as |map|}}
     {{map.popup}}
@@ -20,9 +21,10 @@
     {{/map.vector-layer}}
 
     {{map.tile-layer
+        attribution='Map © <a href="http://arcticconnect.ca/">ArcticConnect</a>. Data © <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        maxZoom=19
         projection="EPSG:3573"
         url="https://tiles.arcticconnect.ca/awm/{z}/{x}/{y}.png"
-        attribution='Map © <a href="http://arcticconnect.ca/">ArcticConnect</a>. Data © <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }}
   {{/openlayers-map}}
 
