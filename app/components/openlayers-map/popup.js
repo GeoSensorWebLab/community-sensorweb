@@ -1,7 +1,6 @@
 import Component from '@ember/component';
-import Extent from 'ol/Extent';
+import Extent from 'ol/extent';
 import Overlay from 'ol/Overlay';
-import View from 'ol/View';
 import {easeOut} from 'ol/easing';
 /*
  * Sub-component for a popup.

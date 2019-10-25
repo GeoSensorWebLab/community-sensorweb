@@ -1,4 +1,3 @@
-import DS from 'ember-data';
 import { helper } from '@ember/component/helper';
 
 /*
