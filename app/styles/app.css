@@ -66,6 +66,8 @@ main {
   flex: 1;
 }
 
+/* Map Styles */
+
 #map-view {
   grid-column-start: 1;
   grid-column-end: 10;
@@ -77,7 +79,7 @@ main {
 }
 
 .map-popup {
-  padding: 1em;
+  padding: 1.5em 1em 1em 1em;
   z-index: 1000;
 
   background-color: #FFF;
@@ -110,9 +112,21 @@ main {
   transform: rotate(45deg);
 }
 
+.popup-close {
+  position: absolute;
+  right: 5px;
+  top: 0px;
+
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #555;
+}
+
 .svg-icon-svg {
   overflow: visible;
 }
+
+/* Chart Styles */
 
 #chart-view {
   grid-column-start: 1;
@@ -137,6 +151,8 @@ main {
   text-align: center;
 }
 
+/* Station Meta Box Styles */
+
 #meta-view {
   grid-column-start: 7;
   grid-column-end: 10;
@@ -155,6 +171,8 @@ main {
 #meta-view .metadata {
   text-align: center;
 }
+
+/* Station Recent Values Box Styles */
 
 #live-view {
   grid-column-start: 10;

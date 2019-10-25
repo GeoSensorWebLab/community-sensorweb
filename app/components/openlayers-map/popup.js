@@ -7,15 +7,15 @@ export default Component.extend({
   classNames: ['map-popup'],
   parentComponent: null,
 
+  // If there are multiple features, then a different popup is rendered
+  // to let the user choose between features
+  multipleFeatures: null,
+
   // Handler for when the feature is "clicked"
   onClick: null,
 
   // Title for the feature, to be displayed in a popup
   title: null,
-
-  // If there are multiple features, then a different popup is rendered
-  // to let the user choose between features
-  multipleFeatures: null,
 
   init() {
     this._super(...arguments);
@@ -41,6 +41,7 @@ export default Component.extend({
         if (features.length > 0) {
           this.set('features', featureObjects);
           this.set('multipleFeatures', (features.length > 1));
+          this.$().show();
 
           let feature = features[0];
           let coordinates = feature.getGeometry().getCoordinates();
@@ -62,5 +63,11 @@ export default Component.extend({
         }
       });
     });
+  },
+
+  actions: {
+    closePopup() {
+      this.$().hide();
+    }
   }
 });
