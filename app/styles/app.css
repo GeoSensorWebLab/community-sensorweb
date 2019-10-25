@@ -76,7 +76,7 @@ main {
   color: #FFF;
 }
 
-#map-popup {
+.map-popup {
   padding: 1em;
 
   background-color: #FFF;
@@ -86,7 +86,7 @@ main {
   border-radius: 5px;
 }
 
-#map-popup .title {
+.map-popup .title {
   padding: 0;
   margin: 0;
 }

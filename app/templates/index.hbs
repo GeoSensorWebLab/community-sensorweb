@@ -5,10 +5,7 @@
                     zoom=zoom
                     projection="EPSG:3573"
   as |map|}}
-    <div id="map-popup">
-      <div class="popup-arrow"></div>
-      <h4 class="title"></h4>
-    </div>
+    {{map.popup}}
 
     {{#map.vector-layer as |layer|}}
       {{#each model as |thing|}}

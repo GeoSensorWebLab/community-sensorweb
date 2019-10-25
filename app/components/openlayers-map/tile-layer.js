@@ -26,7 +26,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this.get('parentComponent').on('mapReady', (map) => {
+    this.get('parentComponent').on('ready', (map) => {
       let tileLayer = new TileLayer({
         extent: this.get('extent'),
         opacity: this.get('opacity'),

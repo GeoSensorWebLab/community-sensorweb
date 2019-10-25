@@ -17,7 +17,7 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this.get('parentComponent').on('mapReady', (map) => {
+    this.get('parentComponent').on('ready', (map) => {
       // Styling for a point feature
       let pointStyle = new Style({
         image: new CircleStyle({
