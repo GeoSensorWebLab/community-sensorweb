@@ -66,6 +66,8 @@ main {
   flex: 1;
 }
 
+/* Map Styles */
+
 #map-view {
   grid-column-start: 1;
   grid-column-end: 10;
@@ -76,13 +78,59 @@ main {
   color: #FFF;
 }
 
-#map-view.leaflet-container {
+.map-popup {
+  padding: 1.5em 1em 1em 1em;
+  z-index: 1000;
+
+  background-color: #FFF;
   color: #000;
+
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+
+.map-popup .title {
+  padding: 0;
+  margin: 0;
+}
+
+.map-popup ul {
+  padding-left: 1em;
+}
+
+.popup-arrow {
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 8px;
+  height: 8px;
+
+  background-color: #FFF;
+  margin-left: -4px;
+  border-bottom: 1px solid #000;
+  border-right: 1px solid #000;
+  transform: rotate(45deg);
+}
+
+.popup-zoom {
+  margin: 0;
+}
+
+.popup-close {
+  position: absolute;
+  right: 5px;
+  top: 0px;
+
+  font-size: 1.5em;
+  cursor: pointer;
+  color: #555;
 }
 
 .svg-icon-svg {
   overflow: visible;
 }
+
+/* Chart Styles */
 
 #chart-view {
   grid-column-start: 1;
@@ -107,6 +155,8 @@ main {
   text-align: center;
 }
 
+/* Station Meta Box Styles */
+
 #meta-view {
   grid-column-start: 7;
   grid-column-end: 10;
@@ -125,6 +175,8 @@ main {
 #meta-view .metadata {
   text-align: center;
 }
+
+/* Station Recent Values Box Styles */
 
 #live-view {
   grid-column-start: 10;

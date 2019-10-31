@@ -44,7 +44,7 @@ export default DS.Model.extend({
   // Select the newest Observation in this Datastream, and return a
   // PromiseObject.
   lastObservation: computed('sortedObservations', function() {
-    let p = new Promise((resolve, reject) => {
+    let p = new Promise((resolve) => {
       this.get('sortedObservations').then((observations) => {
         resolve(observations.get('lastObject'));
       });

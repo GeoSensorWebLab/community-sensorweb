@@ -7,11 +7,6 @@ module.exports = function(defaults) {
     // Add options here
     fingerprint: {
       exclude: [
-        'images/layers-2x.png',
-        'images/layers.png',
-        'images/marker-icon-2x.png',
-        'images/marker-icon.png',
-        'images/marker-shadow.png'
       ]
     }
   });
@@ -48,6 +43,14 @@ module.exports = function(defaults) {
       { transformation: 'cjs', as: 'highcharts/highstock' }
     ]
   });
+
+  app.import('node_modules/proj4/dist/proj4.js', {
+    using: [
+      { transformation: 'cjs', as: 'proj4' }
+    ]
+  });
+
+  app.import('node_modules/ol/ol.css');
 
   return app.toTree();
 };

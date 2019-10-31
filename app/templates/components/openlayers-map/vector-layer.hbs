@@ -1,0 +1,5 @@
+{{#with (hash
+  feature=(component "openlayers-map/feature" parentComponent=this)
+) as |components|}}
+  {{yield components}}
+{{/with}}

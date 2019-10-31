@@ -1,0 +1,13 @@
+<div class="popup-arrow"></div>
+<span class="popup-close" {{action "closePopup"}} title="Close Popup">✕</span>
+{{#if multipleFeatures}}
+	<h4 class="title">Select a Station</h4>
+	<ul>
+	{{#each features as |feature|}}
+		<li><a {{action feature.onClick}} href="#">{{feature.title}}</a></li>
+	{{/each}}
+	</ul>
+{{else}}
+	<h4 class="title">{{features.0.title}}</h4>
+{{/if}}
+<h5 class="popup-zoom"><a href="#" {{action "zoomCloser"}}>Zoom Closer</a></h5>

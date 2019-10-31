@@ -123,8 +123,6 @@ export default DS.RESTAdapter.extend({
 
     url = this.urlPrefix(url, this.buildURL(type, id, snapshot, 'findHasMany', query));
 
-    let options = relationship.options;
-
     return this.getNextPage(url, query, query['$top']);
   },
 

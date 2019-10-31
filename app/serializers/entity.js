@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 import { camelize, capitalize } from '@ember/string';
-import { isNone, typeOf } from '@ember/utils';
+import { typeOf } from '@ember/utils';
 
 export default DS.JSONAPISerializer.extend({
   /**

@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
 
 /*
  * Panel to display the time of the latest Observation for the station
