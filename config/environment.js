@@ -20,8 +20,8 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      staPath: 'v1.0',
-      staURL: 'https://arctic-sensors.sensorup.com'
+      staPath: 'FROST-Server/v1.0',
+      staURL: 'https://arctic-sta.gswlab.ca'
     }
   };
 
